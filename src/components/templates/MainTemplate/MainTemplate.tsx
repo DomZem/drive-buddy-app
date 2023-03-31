@@ -19,7 +19,7 @@ const MainTemplate: FC<MainTemplateProps> = ({ children }) => (
         />
       </div>
     </div>
-    <main className="bg-silver p-6 overflow-y-auto">{children}</main>
+    <main className="bg-slate-gray p-2 overflow-y-auto">{children}</main>
   </div>
 );
 
