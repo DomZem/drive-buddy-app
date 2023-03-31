@@ -1,11 +1,10 @@
-import Sidebar from '@/components/organisms/Sidebar/Sidebar';
+import MainTemplate from '@/components/templates/MainTemplate/MainTemplate';
+import { Outlet } from 'react-router';
 
-const Root = () => {
-  return (
-    <div className="grid grid-cols-[3.5rem_1fr] grid-rows-[3.5rem_1fr] w-full h-screen">
-      <Sidebar />
-    </div>
-  );
-};
+const Root = () => (
+  <MainTemplate>
+    <Outlet />
+  </MainTemplate>
+);
 
 export default Root;
