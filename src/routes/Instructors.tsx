@@ -40,6 +40,16 @@ const Instructors = () => {
     handleOpenModal();
   };
 
+  const handleDeleteUser = async () => {
+    try {
+      await axios.delete(`/instructors/${currentInstructor?.id}`);
+      void getInstructors();
+    } catch (error) {
+      console.log(error);
+    }
+    handleCloseModal();
+  };
+
   useEffect(() => {
     void getInstructors();
   }, []);
@@ -95,7 +105,7 @@ const Instructors = () => {
             ))}
           </ul>
           <Modal isOpen={isOpen} handleClose={handleCloseModal}>
-            {currentModal === 'delete' ? (
+            {currentModal === 'delete' && currentInstructor !== null ? (
               <>
                 <div className="flex flex-col gap-y-3 bg-white p-4">
                   <div className="flex items-center gap-3">
@@ -105,8 +115,8 @@ const Instructors = () => {
                     <h3 className="text-lg font-semibold">Delete data</h3>
                   </div>
                   <p className="text-xs md:text-sm">
-                    Are you sure you want to delete <span className="font-semibold">{currentInstructor?.name}</span>?
-                    All of data will be permanently removed. This action cannot be undone.
+                    Are you sure you want to delete <span className="font-semibold">{currentInstructor.name}</span>? All
+                    of data will be permanently removed. This action cannot be undone.
                   </p>
                 </div>
                 <div className="flex justify-end gap-x-3 bg-rich-black p-3">
@@ -119,7 +129,8 @@ const Instructors = () => {
                   </button>
                   <button
                     className="inline-flex items-center justify-center gap-x-2 rounded-lg bg-red p-2 text-xs font-medium text-white duration-200 hover:bg-[#ba0404] md:text-sm"
-                    onClick={handleCloseModal}
+                    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                    onClick={handleDeleteUser}
                   >
                     <MdDelete className="text-base md:text-xl" />
                     Delete
