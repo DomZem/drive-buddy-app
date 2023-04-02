@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { BiCategory, BiShow } from 'react-icons/bi';
 import { BsPhoneFill } from 'react-icons/bs';
 import { IoWarningOutline } from 'react-icons/io5';
-import { MdClose, MdDelete } from 'react-icons/md';
+import { MdClose, MdDelete, MdOutlineAdd } from 'react-icons/md';
 
 export type ModalType = 'delete' | 'view';
 
@@ -55,7 +55,15 @@ const Instructors = () => {
   }, []);
 
   return (
-    <div className="mx-auto max-w-7xl">
+    <div className="mx-auto flex max-w-7xl flex-col gap-y-3 md:gap-y-4">
+      <div className="flex items-center justify-between rounded-lg bg-white p-3">
+        <h2 className="text-lg font-bold md:text-xl">Instructors</h2>
+
+        <button className="inline-flex items-center justify-center gap-x-2 rounded-lg bg-blue p-2 text-xs font-medium text-white duration-200 md:text-sm">
+          <MdOutlineAdd className="text-base md:text-xl" />
+          Create
+        </button>
+      </div>
       {instructors.length > 0 ? (
         <>
           <ul className="grid grid-cols-[repeat(auto-fit,minmax(15rem,1fr))] gap-3 md:grid-cols-[repeat(auto-fit,minmax(18rem,1fr))] md:gap-4">
@@ -64,7 +72,7 @@ const Instructors = () => {
                 <div className="flex flex-1 flex-col gap-3 rounded-t-lg bg-white p-4">
                   <div className="flex items-center gap-3 md:flex-col">
                     <img
-                      className="h-12 w-12 rounded-full md:h-20 md:w-20"
+                      className="h-8 w-8 rounded-full md:h-20 md:w-20"
                       src={avatar}
                       alt={`${firstName} ${lastName} profile`}
                     />
@@ -107,12 +115,12 @@ const Instructors = () => {
           <Modal isOpen={isOpen} handleClose={handleCloseModal}>
             {currentModal === 'delete' && currentInstructor !== null ? (
               <>
-                <div className="flex flex-col gap-y-3 bg-white p-4">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#fee2e2]">
+                <div className="flex flex-col gap-y-3 bg-white p-3">
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#fee2e2]">
                       <IoWarningOutline className="text-base text-red md:text-xl" />
                     </div>
-                    <h3 className="text-lg font-semibold">Delete data</h3>
+                    <h3 className="text-xl font-semibold">Delete data</h3>
                   </div>
                   <p className="text-xs md:text-sm">
                     Are you sure you want to delete <span className="font-semibold">{currentInstructor.name}</span>? All
