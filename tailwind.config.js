@@ -8,11 +8,20 @@ export default {
         onyx: '#1f2937',
         'slate-gray': '#f3f4f6',
         silver: '#d1d5db',
-        white: '#ffffff',
-        blue: '#2563eb',
-        red: '#dc2626',
+        primary: '#2563eb',
+        error: '#dc2626',
+      },
+      screens: {
+        xs: '525px',
       },
     },
   },
   plugins: [],
 };
+// colors in tailwind palette
+// rich-black --> gray-900
+// onyx --> gray-800
+// slate-gray --> gray-100
+// silver --> gray-300
+// primary --> blue-600
+// error --> red-600

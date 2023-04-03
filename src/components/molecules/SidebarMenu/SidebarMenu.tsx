@@ -23,24 +23,24 @@ const menus = [
 ];
 
 const SidebarMenu = () => (
-  <nav className="flex-1 bg-onyx p-2 md:p-3 flex flex-col gap-y-2 md:gap-y-3">
+  <nav className="flex flex-1 flex-col gap-y-2 bg-onyx p-2 lg:gap-y-3 lg:p-3">
     {menus.map((menu) => (
       <NavLink
-        className="cursor-pointer rounded-lg md:h-[auto] font-medium text-silver duration-200 hover:bg-rich-black hover:text-white h-[2.5rem] flex justify-center items-center md:justify-start md:p-3 md:gap-x-3"
+        className="flex h-[2.5rem] cursor-pointer items-center justify-center rounded-lg font-medium text-silver duration-200 hover:bg-rich-black hover:text-white lg:h-[auto] lg:justify-start lg:gap-x-3 lg:p-3"
         to={menu.title.toLowerCase()}
         key={menu.title}
       >
-        <menu.icon className="text-xl md:text-2xl" />
-        <p className="hidden md:block">{menu.title}</p>
+        <menu.icon className="text-xl lg:text-2xl" />
+        <p className="hidden lg:block">{menu.title}</p>
       </NavLink>
     ))}
 
     <a
-      className="cursor-pointer rounded-lg font-medium text-silver duration-200 hover:bg-rich-black hover:text-white h-[2.5rem] flex justify-center items-center md:justify-start md:p-3 md:gap-x-3"
+      className="flex h-[2.5rem] cursor-pointer items-center justify-center rounded-lg font-medium text-silver duration-200 hover:bg-rich-black hover:text-white lg:h-[auto] lg:justify-start lg:gap-x-3 lg:p-3"
       href="#"
     >
-      <FiLogOut className="text-xl md:text-2xl" />
-      <p className="hidden md:block">Logout</p>
+      <FiLogOut className="text-xl lg:text-2xl" />
+      <p className="hidden lg:block">Logout</p>
     </a>
   </nav>
 );
