@@ -5,7 +5,16 @@ import { type InstructorType } from '@/types';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { IoWarningOutline } from 'react-icons/io5';
-import { MdCategory, MdClose, MdDelete, MdEmail, MdLocationCity, MdSmartphone, MdUpdate } from 'react-icons/md';
+import {
+  MdCategory,
+  MdClose,
+  MdDelete,
+  MdEmail,
+  MdLocationCity,
+  MdOutlineAdd,
+  MdSmartphone,
+  MdUpdate,
+} from 'react-icons/md';
 
 export type ModalType = 'delete' | 'view';
 
@@ -54,7 +63,19 @@ const Instructors = () => {
   }, []);
 
   return (
-    <div className="mx-auto h-full w-full max-w-7xl">
+    <div className="mx-auto h-full w-full max-w-7xl pt-[3.5rem] lg:pt-[4rem]">
+      <div className="fixed left-[3.5rem] right-0 top-0 flex h-[3.5rem] items-center justify-between gap-x-3 bg-rich-black p-2 lg:left-[18rem] lg:h-[4rem] lg:p-3">
+        <input
+          className="w-full max-w-md rounded-lg px-2 py-1.5 text-xs text-rich-black outline-none lg:text-sm"
+          type="text"
+          placeholder="Search some instructors ..."
+        />
+
+        <button className="inline-flex items-center justify-center gap-x-2 rounded-full bg-blue-600 p-2 text-xs font-medium text-white duration-200 hover:bg-blue-700 lg:text-sm">
+          <MdOutlineAdd className="text-base lg:text-xl" />
+        </button>
+      </div>
+
       {instructors.length > 0 ? (
         <ul className="grid gap-2 p-2 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 lg:gap-4 lg:p-4 xl:grid-cols-3 2xl:grid-cols-4">
           {instructors.map(({ firstName, lastName, avatar, phone, email, city, license, id }) => (
