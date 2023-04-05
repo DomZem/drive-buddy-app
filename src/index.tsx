@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import { createRoutesFromElements, Route, RouterProvider } from 'react-router';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import './index.css';
-import { worker } from './mocks/browser';
 import Cars from './routes/Cars';
 import Instructors from './routes/Instructors';
 import Lessons from './routes/Lessons';
@@ -21,8 +20,6 @@ const router = createBrowserRouter(
     </Route>
   )
 );
-
-void worker.start();
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>

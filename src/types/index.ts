@@ -6,5 +6,5 @@ export interface InstructorType {
   avatar: string;
   phone: string;
   email: string;
-  license: string[];
+  license: string;
 }
