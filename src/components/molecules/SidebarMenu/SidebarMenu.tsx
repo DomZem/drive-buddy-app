@@ -27,6 +27,12 @@ const SidebarMenu = () => (
     {menus.map((menu) => (
       <NavLink
         className="flex h-[2.5rem] cursor-pointer items-center justify-center rounded-lg font-medium text-silver duration-200 hover:bg-rich-black hover:text-white lg:h-[auto] lg:justify-start lg:gap-x-3 lg:p-3"
+        style={({ isActive }) => {
+          return {
+            backgroundColor: isActive ? '#111827' : '',
+            color: isActive ? 'white' : '',
+          };
+        }}
         to={menu.title.toLowerCase()}
         key={menu.title}
       >
