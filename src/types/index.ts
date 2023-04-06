@@ -6,5 +6,6 @@ export interface InstructorType {
   avatar: string;
   phone: string;
   email: string;
+  password: string;
   license: string;
 }

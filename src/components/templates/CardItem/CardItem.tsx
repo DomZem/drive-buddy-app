@@ -5,11 +5,19 @@ interface CardItemProps {
   title: string;
   imageSrc: string;
   handleDeleteCardItem: () => void;
+  handleUpdateCardItem: () => void;
   children: React.ReactNode;
   imageAlt?: string;
 }
 
-const CardItem: FC<CardItemProps> = ({ title, imageSrc, imageAlt, handleDeleteCardItem, children }) => (
+const CardItem: FC<CardItemProps> = ({
+  title,
+  imageSrc,
+  imageAlt,
+  handleUpdateCardItem,
+  handleDeleteCardItem,
+  children,
+}) => (
   <li className="flex flex-col shadow-lg">
     <div className="flex flex-1 flex-col gap-3 rounded-t-lg bg-white p-4 lg:gap-4">
       <div className="flex flex-col items-center gap-3">
@@ -23,7 +31,10 @@ const CardItem: FC<CardItemProps> = ({ title, imageSrc, imageAlt, handleDeleteCa
       {children}
     </div>
     <div className="flex">
-      <button className="flex flex-1 items-center justify-center gap-x-2 rounded-bl-lg bg-rich-black p-2 text-xs font-medium text-white duration-200 hover:bg-[#000605] lg:p-3 lg:text-sm">
+      <button
+        className="flex flex-1 items-center justify-center gap-x-2 rounded-bl-lg bg-rich-black p-2 text-xs font-medium text-white duration-200 hover:bg-[#000605] lg:p-3 lg:text-sm"
+        onClick={handleUpdateCardItem}
+      >
         <MdUpdate className="text-base lg:text-xl" />
         Update
       </button>

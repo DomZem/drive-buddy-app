@@ -1,5 +1,5 @@
-import CreateInstructorForm from '@/components/organisms/CreateInstructorForm/CreateInstructorForm';
 import DeleteItemModal from '@/components/organisms/DeleteItemModal/DeleteItemModal';
+import UpdateCreateInstructorForm from '@/components/organisms/UpdateCreateInstructorForm/UpdateCreateInstructorForm';
 import CardItem from '@/components/templates/CardItem/CardItem';
 import Modal from '@/components/templates/Modal/Modal';
 import useModal from '@/components/templates/Modal/userModa';
@@ -9,9 +9,9 @@ import { collection, deleteDoc, doc, getDocs } from '@firebase/firestore';
 import { useEffect, useState } from 'react';
 import { MdCategory, MdEmail, MdLocationCity, MdOutlineAdd, MdSmartphone } from 'react-icons/md';
 
-export type ModalType = 'delete' | 'create';
+export type ModalType = 'delete' | 'update-create';
 
-const initialFormValues = {
+const initialFormValues: InstructorType = {
   id: '',
   firstName: '',
   lastName: '',
@@ -19,12 +19,13 @@ const initialFormValues = {
   avatar: '',
   phone: '',
   email: '',
+  password: '',
   license: '',
 };
 
 const Instructors = () => {
   const [instructors, setInstructors] = useState<InstructorType[]>([]);
-  const [currentModal, setCurrentModal] = useState<ModalType>('create');
+  const [currentModal, setCurrentModal] = useState<ModalType>('update-create');
   const [currentInstructor, setCurrentInstructor] = useState<InstructorType>(instructors[0]);
   const { isOpen, handleOpenModal, handleCloseModal } = useModal();
 
@@ -34,7 +35,7 @@ const Instructors = () => {
     if (modal === 'delete') {
       setCurrentModal('delete');
     } else {
-      setCurrentModal('create');
+      setCurrentModal('update-create');
     }
     setCurrentInstructor(currentItem);
     handleOpenModal();
@@ -43,8 +44,8 @@ const Instructors = () => {
   const handleDeleteInstructor = async () => {
     const instructorDoc = doc(db, 'instructors', currentInstructor.id);
     await deleteDoc(instructorDoc);
-    handleCloseModal();
     void getInstructors();
+    handleCloseModal();
   };
 
   const getInstructors = async () => {
@@ -58,6 +59,7 @@ const Instructors = () => {
         avatar: doc.data().avatar,
         phone: doc.data().phone,
         email: doc.data().email,
+        password: doc.data().password,
         license: doc.data().license,
       }))
     );
@@ -76,9 +78,10 @@ const Instructors = () => {
           placeholder="Search some instructors by name ..."
         />
 
+        {/* When we click to create button we pass empty form values */}
         <button
           className="inline-flex items-center justify-center gap-x-2 rounded-full bg-blue-600 p-2 text-xs font-medium text-white duration-200 hover:bg-blue-700 lg:text-sm"
-          onClick={() => handleOpenItem('create', initialFormValues)}
+          onClick={() => handleOpenItem('update-create', initialFormValues)}
         >
           <MdOutlineAdd className="text-base lg:text-xl" />
         </button>
@@ -94,6 +97,10 @@ const Instructors = () => {
                 imageSrc={avatar}
                 handleDeleteCardItem={() => {
                   handleOpenItem('delete', instructor);
+                }}
+                // When we click to update button on card we pass current instructor data. We just change form values.
+                handleUpdateCardItem={() => {
+                  handleOpenItem('update-create', instructor);
                 }}
                 key={id}
               >
@@ -130,7 +137,9 @@ const Instructors = () => {
           />
         )}
 
-        {currentModal === 'create' && <CreateInstructorForm handleCloseModal={handleCloseModal} />}
+        {currentModal === 'update-create' && (
+          <UpdateCreateInstructorForm formValues={currentInstructor} handleCloseModal={handleCloseModal} />
+        )}
       </Modal>
     </div>
   );

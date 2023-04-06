@@ -1,39 +1,45 @@
 import { db, storage } from '@/firebase/config';
 import { type InstructorType } from '@/types';
 import { faker } from '@faker-js/faker';
-import { addDoc, collection } from '@firebase/firestore';
+import { addDoc, collection, doc, updateDoc } from '@firebase/firestore';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { Field, Form, Formik, type FormikHelpers } from 'formik';
 import { useState, type FC } from 'react';
-import { MdClose, MdCloudUpload, MdUpdate } from 'react-icons/md';
+import { MdClose, MdCloudUpload, MdPersonAddAlt1, MdUpdate } from 'react-icons/md';
 
-interface CreateInstructorFormProps {
+interface UpdateCreateInstructorFormProps {
+  formValues: InstructorType;
   handleCloseModal: () => void;
 }
 
-const initialFormValues = {
-  id: '',
-  firstName: '',
-  lastName: '',
-  city: '',
-  avatar: '',
-  phone: '',
-  email: '',
-  license: '',
-};
+const UpdateCreateInstructorForm: FC<UpdateCreateInstructorFormProps> = ({ formValues, handleCloseModal }) => {
+  const [file, setFile] = useState(formValues.avatar);
 
-const CreateInstructorForm: FC<CreateInstructorFormProps> = ({ handleCloseModal }) => {
-  const [file, setFile] = useState(initialFormValues.avatar);
+  // When there is an ID in formValues we have already created user and we want update data. When the ID is empty we want to create user.
+  const isUpdateForm = formValues.id.length > 0;
 
   const handleCreateInstructor = async (values: InstructorType, { setSubmitting }: FormikHelpers<InstructorType>) => {
     try {
-      await addDoc(collection(db, 'instructors'), { ...values, avatar: file });
+      await addDoc(collection(db, 'instructors'), { ...values, avatar: file, id: faker.datatype.uuid() });
       setFile('');
     } catch (e) {
       console.log(e);
+    } finally {
+      setSubmitting(false);
+      handleCloseModal();
     }
-    setSubmitting(false);
-    handleCloseModal();
+  };
+
+  const handleUpdateInstructor = async (values: InstructorType, { setSubmitting }: FormikHelpers<InstructorType>) => {
+    try {
+      const instructorRef = doc(db, 'instructors', formValues.id);
+      await updateDoc(instructorRef, { ...values });
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setSubmitting(false);
+      handleCloseModal();
+    }
   };
 
   const handleUploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,7 +60,7 @@ const CreateInstructorForm: FC<CreateInstructorFormProps> = ({ handleCloseModal 
   };
 
   return (
-    <Formik initialValues={initialFormValues} onSubmit={handleCreateInstructor}>
+    <Formik initialValues={formValues} onSubmit={isUpdateForm ? handleUpdateInstructor : handleCreateInstructor}>
       <Form>
         <div className="flex flex-col items-center justify-center gap-y-3 bg-rich-black p-3">
           <img
@@ -179,8 +185,12 @@ const CreateInstructorForm: FC<CreateInstructorFormProps> = ({ handleCloseModal 
             className="bg-red inline-flex items-center justify-center gap-x-2 rounded-lg bg-green-600 p-2 text-xs font-medium text-white duration-200 hover:bg-green-700 lg:text-sm"
             type="submit"
           >
-            <MdUpdate className="text-base md:text-xl" />
-            Create
+            {isUpdateForm ? (
+              <MdUpdate className="text-base md:text-xl" />
+            ) : (
+              <MdPersonAddAlt1 className="text-base md:text-xl" />
+            )}
+            {isUpdateForm ? 'Update' : 'Create'}
           </button>
         </div>
       </Form>
@@ -188,4 +198,4 @@ const CreateInstructorForm: FC<CreateInstructorFormProps> = ({ handleCloseModal 
   );
 };
 
-export default CreateInstructorForm;
+export default UpdateCreateInstructorForm;
