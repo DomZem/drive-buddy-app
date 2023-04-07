@@ -13,11 +13,11 @@ const DeleteItemModal: FC<DeleteItemModalProps> = ({ handleCloseModal, handleDel
   return (
     <>
       <div className="flex flex-col gap-y-3 bg-white p-4">
-        <div className="flex flex-col items-center gap-3">
+        <div className="flex flex-col items-center gap-y-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
-            <IoWarningOutline className="text-base text-red-600 lg:text-xl" />
+            <IoWarningOutline className="icon text-red-600" />
           </div>
-          <h2 className="text-xl font-semibold">Delete item</h2>
+          <h2 className="text-lg font-semibold lg:text-xl">Delete item</h2>
         </div>
         <p>
           Are you sure you want to delete
@@ -25,7 +25,7 @@ const DeleteItemModal: FC<DeleteItemModalProps> = ({ handleCloseModal, handleDel
           be undone.
         </p>
       </div>
-      <div className="flex justify-end gap-x-2 bg-rich-black p-2">
+      <div className="flex justify-end gap-x-3 bg-rich-black p-3">
         <Button isWhite onClick={handleCloseModal}>
           <MdClose className="icon" />
           Cancel

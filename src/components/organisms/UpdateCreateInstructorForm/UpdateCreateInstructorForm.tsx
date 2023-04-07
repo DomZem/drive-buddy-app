@@ -64,9 +64,9 @@ const UpdateCreateInstructorForm: FC<UpdateCreateInstructorFormProps> = ({ formV
   return (
     <Formik initialValues={formValues} onSubmit={isUpdateForm ? handleUpdateInstructor : handleCreateInstructor}>
       <Form>
-        <div className="flex flex-col items-center justify-center gap-y-3 bg-rich-black p-3">
+        <div className="flex flex-col items-center justify-center gap-y-3 bg-rich-black p-4">
           <img
-            className="h-24 w-24 rounded-full"
+            className="h-14 w-14 rounded-full lg:h-24 lg:w-24"
             src={file.length === 0 ? 'https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg' : file}
             alt=""
           />
@@ -80,7 +80,7 @@ const UpdateCreateInstructorForm: FC<UpdateCreateInstructorFormProps> = ({ formV
           <input id="avatar" type="file" className="hidden" onChange={handleUploadImage} />
         </div>
 
-        <div className="grid grid-cols-2 gap-3 bg-white p-3">
+        <div className="grid grid-cols-2 gap-3 bg-white p-4">
           <FormField label="First name" id="firstName" name="firstName" type="text" placeholder="First name" required />
           <FormField label="Last name" id="lastName" name="lastName" type="text" placeholder="Last name" required />
           <FormField label="Email" id="email" name="email" type="email" placeholder="Email" required />

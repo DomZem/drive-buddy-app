@@ -19,15 +19,15 @@ const CardItem: FC<CardItemProps> = ({
   handleDeleteCardItem,
   children,
 }) => (
-  <li className="flex flex-col shadow-lg">
-    <div className="flex flex-1 flex-col gap-3 rounded-t-lg bg-white p-4 lg:gap-4">
-      <div className="flex flex-col items-center gap-3">
+  <li className="flex flex-col shadow-lg duration-200 hover:shadow-xl">
+    <div className="flex flex-1 flex-col gap-2 rounded-t-lg bg-white p-3 lg:gap-3 lg:p-4">
+      <div className="flex flex-col items-center gap-3 lg:gap-4">
         <img
           className="h-14 w-14 rounded-full lg:h-24 lg:w-24"
           src={imageSrc}
           alt={imageAlt === undefined ? title : imageAlt}
         />
-        <h2 className="text-base font-semibold text-rich-black lg:text-xl">{title}</h2>
+        <h2 className="text-center text-lg font-semibold lg:text-xl">{title}</h2>
       </div>
       {children}
     </div>
