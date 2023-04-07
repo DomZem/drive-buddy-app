@@ -38,7 +38,7 @@ const Login = () => {
           <h1 className="text-xl font-semibold text-white lg:text-2xl">Drive buddy</h1>
         </header>
         <section className="w-full rounded-lg bg-white p-5 shadow-lg">
-          <h2 className="mb-4 text-center text-lg font-semibold lg:text-xl">Sign in</h2>
+          <h2 className="mb-4 text-center text-xl font-semibold lg:text-2xl">Sign in</h2>
           <Formik initialValues={initialValues} onSubmit={handleLogin}>
             <Form className="flex flex-col gap-y-5">
               <FormField label="Email" id="email" name="email" type="email" placeholder="Email" required />

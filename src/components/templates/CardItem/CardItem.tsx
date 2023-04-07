@@ -27,7 +27,7 @@ const CardItem: FC<CardItemProps> = ({
           src={imageSrc}
           alt={imageAlt === undefined ? title : imageAlt}
         />
-        <h2 className="text-center text-lg font-semibold lg:text-xl">{title}</h2>
+        <h2 className="text-center text-base font-semibold lg:text-lg">{title}</h2>
       </div>
       {children}
     </div>

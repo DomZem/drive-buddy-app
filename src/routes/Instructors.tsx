@@ -1,13 +1,15 @@
 import DeleteItemModal from '@/components/organisms/DeleteItemModal/DeleteItemModal';
+import SearchCreateBar from '@/components/organisms/SearchCreateBar/SearchCreateBar';
 import UpdateCreateInstructorForm from '@/components/organisms/UpdateCreateInstructorForm/UpdateCreateInstructorForm';
 import CardItem from '@/components/templates/CardItem/CardItem';
 import Modal from '@/components/templates/Modal/Modal';
 import useModal from '@/components/templates/Modal/userModa';
+import PageTemplate from '@/components/templates/PageTemplate/PageTemplate';
 import { db } from '@/firebase/config';
 import { type InstructorType } from '@/types';
 import { collection, deleteDoc, doc, getDocs } from '@firebase/firestore';
 import { useEffect, useState } from 'react';
-import { MdCategory, MdEmail, MdLocationCity, MdOutlineAdd, MdSmartphone } from 'react-icons/md';
+import { MdCategory, MdEmail, MdLocationCity, MdSmartphone } from 'react-icons/md';
 
 export type ModalType = 'delete' | 'update-create';
 
@@ -27,6 +29,8 @@ const Instructors = () => {
   const [instructors, setInstructors] = useState<InstructorType[]>([]);
   const [currentModal, setCurrentModal] = useState<ModalType>('update-create');
   const [currentInstructor, setCurrentInstructor] = useState<InstructorType>(instructors[0]);
+  const [filterByName, setFilterByName] = useState('');
+  const [filteredInstructors, setFilteredInstructors] = useState<InstructorType[]>([]);
   const { isOpen, handleOpenModal, handleCloseModal } = useModal();
 
   const instructorsCollectionRef = collection(db, 'instructors');
@@ -65,24 +69,34 @@ const Instructors = () => {
     );
   };
 
+  const handleFilterName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFilterByName(e.target.value);
+  };
+
+  useEffect(() => {
+    const filtered = instructors.filter((instructor) => {
+      const instructorFirstName = instructor.firstName.toLowerCase();
+
+      return instructorFirstName.includes(filterByName.toLowerCase());
+    });
+    setFilteredInstructors(filtered);
+  }, [filterByName, instructors]);
+
   useEffect(() => {
     void getInstructors();
   }, []);
 
   return (
-    <div className="mx-auto h-full w-full max-w-7xl pt-[3.5rem] lg:pt-[4rem]">
-      <div className="fixed left-[3.5rem] right-0 top-0 flex h-[3.5rem] items-center justify-end gap-x-3 bg-rich-black p-2 lg:left-[18rem] lg:h-[4rem] lg:p-3">
-        <button
-          className="inline-flex items-center justify-center gap-x-2 rounded-full bg-blue-600 p-2 text-xs font-medium text-white duration-200 hover:bg-blue-700 lg:text-sm"
-          onClick={() => handleOpenItem('update-create', initialFormValues)}
-        >
-          <MdOutlineAdd className="text-base lg:text-xl" />
-        </button>
-      </div>
+    <PageTemplate>
+      <SearchCreateBar
+        onHandleChange={handleFilterName}
+        onHandleClick={() => handleOpenItem('update-create', initialFormValues)}
+        placeHolderText="Search some instructors by name ..."
+      />
 
-      {instructors.length > 0 ? (
+      {filteredInstructors.length > 0 ? (
         <ul className="grid gap-2 p-2 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 lg:gap-3 lg:p-3 xl:grid-cols-3 2xl:grid-cols-4">
-          {instructors.map((instructor) => {
+          {filteredInstructors.map((instructor) => {
             const { firstName, lastName, email, avatar, phone, license, city, id } = instructor;
             return (
               <CardItem
@@ -134,7 +148,7 @@ const Instructors = () => {
           <UpdateCreateInstructorForm formValues={currentInstructor} handleCloseModal={handleCloseModal} />
         )}
       </Modal>
-    </div>
+    </PageTemplate>
   );
 };
 
