@@ -5,7 +5,7 @@ import Cars from './routes/Cars';
 import Instructors from './routes/Instructors';
 import Lessons from './routes/Lessons';
 import Login from './routes/Login';
-import Sutdents from './routes/Students';
+import Students from './routes/Students';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -15,7 +15,7 @@ const router = createBrowserRouter(
       <Route element={<ProtectedRoute />}>
         <Route path="lessons" element={<Lessons />} />
         <Route path="instructors" element={<Instructors />} />
-        <Route path="students" element={<Sutdents />} />
+        <Route path="students" element={<Students />} />
         <Route path="cars" element={<Cars />} />
       </Route>
     </Route>
