@@ -1,3 +1,5 @@
+import Button from '@/components/atoms/Button/Button';
+import FormField from '@/components/molecules/FormField/FormField';
 import { db, storage } from '@/firebase/config';
 import { type InstructorType } from '@/types';
 import { faker } from '@faker-js/faker';
@@ -33,7 +35,7 @@ const UpdateCreateInstructorForm: FC<UpdateCreateInstructorFormProps> = ({ formV
   const handleUpdateInstructor = async (values: InstructorType, { setSubmitting }: FormikHelpers<InstructorType>) => {
     try {
       const instructorRef = doc(db, 'instructors', formValues.id);
-      await updateDoc(instructorRef, { ...values });
+      await updateDoc(instructorRef, { ...values, avatar: file });
     } catch (e) {
       console.log(e);
     } finally {
@@ -78,86 +80,13 @@ const UpdateCreateInstructorForm: FC<UpdateCreateInstructorFormProps> = ({ formV
           <input id="avatar" type="file" className="hidden" onChange={handleUploadImage} />
         </div>
 
-        <div className="grid grid-cols-2 gap-3 bg-slate-gray p-3">
-          <div>
-            <label htmlFor="firstName" className="mb-2 block text-sm font-medium text-rich-black">
-              First Name
-            </label>
-            <Field
-              id="firstName"
-              name="firstName"
-              className="block w-full rounded-lg bg-white p-2 text-sm text-rich-black outline-none"
-              placeholder="John"
-              required
-            />
-          </div>
-
-          <div>
-            <label htmlFor="lastName" className="mb-2 block text-sm font-medium text-rich-black">
-              Last Name
-            </label>
-            <Field
-              id="lastName"
-              name="lastName"
-              className="block w-full rounded-lg bg-white p-2 text-sm text-rich-black outline-none"
-              placeholder="Skywalker"
-              required
-            />
-          </div>
-
-          <div>
-            <label htmlFor="email" className="mb-2 block text-sm font-medium text-rich-black">
-              Email
-            </label>
-            <Field
-              id="email"
-              name="email"
-              type="email"
-              className="block w-full rounded-lg bg-white p-2 text-sm text-rich-black outline-none"
-              placeholder="anakinskywalker@gmail.com"
-              required
-            />
-          </div>
-
-          <div>
-            <label htmlFor="password" className="mb-2 block text-sm font-medium text-rich-black">
-              Password
-            </label>
-            <Field
-              id="password"
-              name="password"
-              type="password"
-              className="block w-full rounded-lg bg-white p-2 text-sm text-rich-black outline-none"
-              placeholder="m#P52s@ap$V"
-              required
-            />
-          </div>
-
-          <div>
-            <label htmlFor="phone" className="mb-2 block text-sm font-medium text-rich-black">
-              Phone
-            </label>
-            <Field
-              id="phone"
-              name="phone"
-              className="block w-full rounded-lg bg-white p-2 text-sm text-rich-black outline-none"
-              placeholder="238-239-234"
-              required
-            />
-          </div>
-
-          <div>
-            <label htmlFor="city" className="mb-2 block text-sm font-medium text-rich-black">
-              City
-            </label>
-            <Field
-              id="city"
-              name="city"
-              className="block w-full rounded-lg bg-white p-2 text-sm text-rich-black outline-none"
-              placeholder="Los Angeles"
-              required
-            />
-          </div>
+        <div className="grid grid-cols-2 gap-3 bg-white p-3">
+          <FormField label="First name" id="firstName" name="firstName" type="text" placeholder="First name" required />
+          <FormField label="Last name" id="lastName" name="lastName" type="text" placeholder="Last name" required />
+          <FormField label="Email" id="email" name="email" type="email" placeholder="Email" required />
+          <FormField label="Password" id="password" name="password" type="password" placeholder="Password" required />
+          <FormField label="Phone" id="phone" name="phone" type="text" placeholder="Phone" required />
+          <FormField label="City" id="city" name="city" type="text" placeholder="City" required />
 
           <div className="col-span-full">
             <label htmlFor="license" className="mb-2 block text-sm font-medium text-rich-black">
@@ -174,24 +103,14 @@ const UpdateCreateInstructorForm: FC<UpdateCreateInstructorFormProps> = ({ formV
         </div>
 
         <div className="flex justify-end gap-x-3 bg-rich-black p-3">
-          <button
-            className="inline-flex items-center justify-center gap-x-2 rounded-lg bg-white p-2 text-xs font-medium text-rich-black duration-200 hover:bg-[#ddd] lg:text-sm"
-            onClick={handleCloseModal}
-          >
-            <MdClose className="text-base md:text-xl" />
+          <Button isWhite onClick={handleCloseModal}>
+            <MdClose className="icon" />
             Cancel
-          </button>
-          <button
-            className="bg-red inline-flex items-center justify-center gap-x-2 rounded-lg bg-green-600 p-2 text-xs font-medium text-white duration-200 hover:bg-green-700 lg:text-sm"
-            type="submit"
-          >
-            {isUpdateForm ? (
-              <MdUpdate className="text-base md:text-xl" />
-            ) : (
-              <MdPersonAddAlt1 className="text-base md:text-xl" />
-            )}
+          </Button>
+          <Button isGreen type="submit">
+            {isUpdateForm ? <MdUpdate className="icon" /> : <MdPersonAddAlt1 className="icon" />}
             {isUpdateForm ? 'Update' : 'Create'}
-          </button>
+          </Button>
         </div>
       </Form>
     </Formik>

@@ -51,7 +51,7 @@ const SidebarMenu = () => {
           key={menu.title}
         >
           <menu.icon className="text-xl lg:text-2xl" />
-          <p className="hidden lg:block">{menu.title}</p>
+          <p className="hidden text-base lg:block">{menu.title}</p>
         </NavLink>
       ))}
 
@@ -60,7 +60,7 @@ const SidebarMenu = () => {
         onClick={handleSignOut}
       >
         <FiLogOut className="text-xl lg:text-2xl" />
-        <p className="hidden lg:block">Logout</p>
+        <p className="hidden text-base lg:block">Logout</p>
       </button>
     </nav>
   );

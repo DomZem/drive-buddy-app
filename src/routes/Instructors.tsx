@@ -73,7 +73,7 @@ const Instructors = () => {
     <div className="mx-auto h-full w-full max-w-7xl pt-[3.5rem] lg:pt-[4rem]">
       <div className="fixed left-[3.5rem] right-0 top-0 flex h-[3.5rem] items-center justify-between gap-x-3 bg-rich-black p-2 lg:left-[18rem] lg:h-[4rem] lg:p-3">
         <input
-          className="w-full max-w-md rounded-lg px-2 py-1.5 text-xs text-rich-black outline-none lg:text-sm"
+          className="w-full max-w-md rounded-lg p-2 text-xs text-rich-black outline-none lg:text-sm"
           type="text"
           placeholder="Search some instructors by name ..."
         />
@@ -105,20 +105,20 @@ const Instructors = () => {
                 key={id}
               >
                 <ul className="flex flex-col items-start gap-y-3 font-medium">
-                  <li className="flex items-center gap-x-2 text-xs lg:text-sm">
-                    <MdEmail className="text-base lg:text-xl" />
+                  <li className="flex items-center gap-x-2 font-medium">
+                    <MdEmail className="text-xl lg:text-2xl" />
                     {email}
                   </li>
-                  <li className="flex items-center gap-x-2 text-xs lg:text-sm">
-                    <MdSmartphone className="text-base lg:text-xl" />
+                  <li className="flex items-center gap-x-2 font-medium">
+                    <MdSmartphone className="text-xl lg:text-2xl" />
                     {phone}
                   </li>
-                  <li className="flex items-center gap-x-2 text-xs font-medium lg:text-sm">
-                    <MdCategory className="text-base lg:text-xl" />
+                  <li className="flex items-center gap-x-2 font-medium">
+                    <MdCategory className="text-xl lg:text-2xl" />
                     {license.split(', ')}
                   </li>
-                  <li className="flex items-center gap-x-2 text-xs lg:text-sm">
-                    <MdLocationCity className="text-base lg:text-xl" />
+                  <li className="flex items-center gap-x-2 font-medium">
+                    <MdLocationCity className="text-xl lg:text-2xl" />
                     {city}
                   </li>
                 </ul>

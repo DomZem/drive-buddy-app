@@ -1,3 +1,4 @@
+import Button from '@/components/atoms/Button/Button';
 import { type FC } from 'react';
 import { MdDelete, MdUpdate } from 'react-icons/md';
 
@@ -31,20 +32,14 @@ const CardItem: FC<CardItemProps> = ({
       {children}
     </div>
     <div className="flex">
-      <button
-        className="flex flex-1 items-center justify-center gap-x-2 rounded-bl-lg bg-rich-black p-2 text-xs font-medium text-white duration-200 hover:bg-[#000605] lg:p-3 lg:text-sm"
-        onClick={handleUpdateCardItem}
-      >
-        <MdUpdate className="text-base lg:text-xl" />
+      <Button isBlack className="flex-1 rounded-none rounded-bl-lg lg:p-3" onClick={handleUpdateCardItem}>
+        <MdUpdate className="icon" />
         Update
-      </button>
-      <button
-        className="bg-red flex flex-1 items-center justify-center gap-x-2 rounded-br-lg bg-red-600 p-2 text-xs font-medium text-white duration-200 hover:bg-red-700 lg:p-3 lg:text-sm"
-        onClick={handleDeleteCardItem}
-      >
-        <MdDelete className="text-base lg:text-xl" />
+      </Button>
+      <Button isRed className="flex-1 rounded-none rounded-br-lg lg:p-3" onClick={handleDeleteCardItem}>
+        <MdDelete className="icon" />
         Delete
-      </button>
+      </Button>
     </div>
   </li>
 );

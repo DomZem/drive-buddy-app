@@ -6,4 +6,39 @@
   html {
     font-family: 'Montserrat', sans-serif;
   }
+
+  body,
+  li,
+  button,
+  label,
+  input {
+    @apply text-xs;
+  }
+
+  body,
+  p {
+    @apply leading-relaxed;
+  }
+
+  @media (min-width: 1024px) {
+    body,
+    button,
+    input,
+    label,
+    li {
+      @apply text-sm;
+    }
+  }
+}
+
+@layer components {
+  .icon {
+    @apply text-base;
+  }
+
+  @media (min-width: 1024px) {
+    .icon {
+      @apply text-xl;
+    }
+  }
 }
