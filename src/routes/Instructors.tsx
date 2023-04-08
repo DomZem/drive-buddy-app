@@ -1,3 +1,4 @@
+import DetailsList, { type detailsList } from '@/components/molecules/DetailsList/DetailsList';
 import DeleteItemModal from '@/components/organisms/DeleteItemModal/DeleteItemModal';
 import SearchCreateBar from '@/components/organisms/SearchCreateBar/SearchCreateBar';
 import UpdateCreateInstructorForm from '@/components/organisms/UpdateCreateInstructorForm/UpdateCreateInstructorForm';
@@ -6,12 +7,10 @@ import Modal from '@/components/templates/Modal/Modal';
 import useModal from '@/components/templates/Modal/userModa';
 import PageTemplate from '@/components/templates/PageTemplate/PageTemplate';
 import { db } from '@/firebase/config';
-import { type InstructorType } from '@/types';
+import { type InstructorType, type ModalType } from '@/types';
 import { collection, deleteDoc, doc, getDocs } from '@firebase/firestore';
 import { useEffect, useState } from 'react';
 import { MdCategory, MdEmail, MdLocationCity, MdSmartphone } from 'react-icons/md';
-
-export type ModalType = 'delete' | 'update-create';
 
 const initialFormValues: InstructorType = {
   id: '',
@@ -98,6 +97,25 @@ const Instructors = () => {
         <ul className="grid gap-2 p-2 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 lg:gap-3 lg:p-3 xl:grid-cols-3 2xl:grid-cols-4">
           {filteredInstructors.map((instructor) => {
             const { firstName, lastName, email, avatar, phone, license, city, id } = instructor;
+            const licenseSplit = license.split(', ').toString();
+            const detailsList: detailsList = [
+              {
+                icon: MdEmail,
+                value: email,
+              },
+              {
+                icon: MdSmartphone,
+                value: phone,
+              },
+              {
+                icon: MdCategory,
+                value: licenseSplit,
+              },
+              {
+                icon: MdLocationCity,
+                value: city,
+              },
+            ];
             return (
               <CardItem
                 title={`${firstName} ${lastName}`}
@@ -111,24 +129,7 @@ const Instructors = () => {
                 }}
                 key={id}
               >
-                <ul className="flex flex-col items-start gap-y-3 font-medium">
-                  <li className="flex items-center gap-x-2 font-medium">
-                    <MdEmail className="text-xl lg:text-2xl" />
-                    {email}
-                  </li>
-                  <li className="flex items-center gap-x-2 font-medium">
-                    <MdSmartphone className="text-xl lg:text-2xl" />
-                    {phone}
-                  </li>
-                  <li className="flex items-center gap-x-2 font-medium">
-                    <MdCategory className="text-xl lg:text-2xl" />
-                    {license.split(', ')}
-                  </li>
-                  <li className="flex items-center gap-x-2 font-medium">
-                    <MdLocationCity className="text-xl lg:text-2xl" />
-                    {city}
-                  </li>
-                </ul>
+                <DetailsList list={detailsList} />
               </CardItem>
             );
           })}
