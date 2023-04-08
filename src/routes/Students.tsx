@@ -1,6 +1,7 @@
 import DetailsList, { type detailsList } from '@/components/molecules/DetailsList/DetailsList';
 import DeleteItemModal from '@/components/organisms/DeleteItemModal/DeleteItemModal';
 import SearchCreateBar from '@/components/organisms/SearchCreateBar/SearchCreateBar';
+import UpdateCreateStudentForm from '@/components/organisms/UpdateCreateStudentForm/UpdateCreateStudentForm';
 import CardItem from '@/components/templates/CardItem/CardItem';
 import Modal from '@/components/templates/Modal/Modal';
 import useModal from '@/components/templates/Modal/userModa';
@@ -10,6 +11,18 @@ import { type ModalType, type StudentType } from '@/types';
 import { collection, deleteDoc, doc, getDocs } from '@firebase/firestore';
 import { useEffect, useState } from 'react';
 import { MdCategory, MdEmail, MdLocationCity, MdSmartphone } from 'react-icons/md';
+
+const initialFormValues: StudentType = {
+  id: '',
+  firstName: '',
+  lastName: '',
+  city: '',
+  avatar: '',
+  phone: '',
+  email: '',
+  password: '',
+  courseCategory: '',
+};
 
 const Students = () => {
   const [students, setStudents] = useState<StudentType[]>([]);
@@ -46,7 +59,7 @@ const Students = () => {
     handleOpenModal();
   };
 
-  const handleDeleteCar = async () => {
+  const handleDeleteStudent = async () => {
     const studentsDoc = doc(db, 'students', currentStudent.id);
     await deleteDoc(studentsDoc);
     void getStudents();
@@ -61,8 +74,8 @@ const Students = () => {
     <PageTemplate>
       <SearchCreateBar
         onHandleChange={() => console.log('hello!')}
-        onHandleClick={() => console.log('hello!')}
-        placeHolderText="Search some cars by name ..."
+        onHandleClick={() => handleOpenItem('update-create', initialFormValues)}
+        placeHolderText="Search some students by name ..."
       />
       {students.length > 0 ? (
         <ul className="grid gap-2 p-2 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 lg:gap-3 lg:p-3 xl:grid-cols-3 2xl:grid-cols-4">
@@ -94,7 +107,7 @@ const Students = () => {
                   handleOpenItem('delete', student);
                 }}
                 handleUpdateCardItem={() => {
-                  console.log('hello!');
+                  handleOpenItem('update-create', student);
                 }}
                 key={id}
               >
@@ -109,9 +122,13 @@ const Students = () => {
         {currentModal === 'delete' && (
           <DeleteItemModal
             handleCloseModal={handleCloseModal}
-            handleDeleteItem={handleDeleteCar}
+            handleDeleteItem={handleDeleteStudent}
             boldText={` ${currentStudent.firstName} ${currentStudent.lastName}`}
           />
+        )}
+
+        {currentModal === 'update-create' && (
+          <UpdateCreateStudentForm formValues={currentStudent} handleCloseModal={handleCloseModal} />
         )}
       </Modal>
     </PageTemplate>
