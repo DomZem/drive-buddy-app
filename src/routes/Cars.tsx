@@ -1,6 +1,7 @@
 import DetailsList, { type detailsList } from '@/components/molecules/DetailsList/DetailsList';
 import DeleteItemModal from '@/components/organisms/DeleteItemModal/DeleteItemModal';
 import SearchCreateBar from '@/components/organisms/SearchCreateBar/SearchCreateBar';
+import UpdateCreateCarForm from '@/components/organisms/UpdateCreateCarForm/UpdateCreateCarForm';
 import CardItem from '@/components/templates/CardItem/CardItem';
 import Modal from '@/components/templates/Modal/Modal';
 import useModal from '@/components/templates/Modal/userModa';
@@ -12,6 +13,17 @@ import { useEffect, useState } from 'react';
 import { GiFuelTank, GiKeyCard } from 'react-icons/gi';
 import { MdDateRange } from 'react-icons/md';
 import { RxIdCard } from 'react-icons/rx';
+
+const initialFormValues: CarType = {
+  id: '',
+  mark: '',
+  model: '',
+  avatar: '',
+  fuel: '',
+  vin: '',
+  registration: '',
+  yearProduction: '',
+};
 
 const Cars = () => {
   const [cars, setCars] = useState<CarType[]>([]);
@@ -62,7 +74,7 @@ const Cars = () => {
     <PageTemplate>
       <SearchCreateBar
         onHandleChange={() => console.log('hello!')}
-        onHandleClick={() => console.log('hello!')}
+        onHandleClick={() => handleOpenItem('update-create', initialFormValues)}
         placeHolderText="Search some cars by name ..."
       />
       {cars.length > 0 ? (
@@ -94,7 +106,7 @@ const Cars = () => {
                 title={`${mark} ${model}`}
                 imageSrc={avatar}
                 handleDeleteCardItem={() => handleOpenItem('delete', car)}
-                handleUpdateCardItem={() => console.log('hello!')}
+                handleUpdateCardItem={() => handleOpenItem('update-create', car)}
                 key={id}
               >
                 <DetailsList list={detailsList} />
@@ -111,6 +123,9 @@ const Cars = () => {
             handleDeleteItem={handleDeleteCar}
             boldText={` ${currentCar.mark} ${currentCar.model}`}
           />
+        )}
+        {currentModal === 'update-create' && (
+          <UpdateCreateCarForm formValues={currentCar} handleCloseModal={handleCloseModal} />
         )}
       </Modal>
     </PageTemplate>

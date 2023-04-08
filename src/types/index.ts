@@ -16,7 +16,7 @@ export interface CarType {
   model: string;
   avatar: string;
   // reviewDate: Date;
-  yearProduction: number;
+  yearProduction: string;
   fuel: string;
   vin: string;
   registration: string;

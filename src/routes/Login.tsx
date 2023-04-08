@@ -50,7 +50,9 @@ const Login = () => {
                 placeholder="Password"
                 required
               />
-              <Button type="sumbmit">Sign in</Button>
+              <Button className="p-[9px]" type="sumbmit">
+                Sign in
+              </Button>
             </Form>
           </Formik>
         </section>
