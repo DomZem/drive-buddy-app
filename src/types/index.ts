@@ -22,4 +22,16 @@ export interface CarType {
   registration: string;
 }
 
+export interface StudentType {
+  id: string;
+  firstName: string;
+  lastName: string;
+  city: string;
+  avatar: string;
+  phone: string;
+  email: string;
+  password: string;
+  courseCategory: string;
+}
+
 export type ModalType = 'delete' | 'update-create';
