@@ -9,7 +9,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
 }
 
-const Button: FC<ButtonProps> = ({ isRed, isWhite, isGreen, isBlack, className, children }) => (
+const Button: FC<ButtonProps> = ({ isRed, isWhite, isGreen, isBlack, className, children, ...props }) => (
   <button
     className={`${
       isRed
@@ -22,6 +22,7 @@ const Button: FC<ButtonProps> = ({ isRed, isWhite, isGreen, isBlack, className, 
         ? 'bg-gray-800 text-white hover:bg-gray-900'
         : 'bg-blue-600 text-white hover:bg-blue-700'
     } inline-flex items-center justify-center gap-x-2 rounded-lg p-2 font-medium duration-200 ${className}`}
+    {...props}
   >
     {children}
   </button>
