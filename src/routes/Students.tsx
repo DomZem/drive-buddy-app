@@ -2,7 +2,7 @@ import DetailsList, { type detailsList } from '@/components/molecules/DetailsLis
 import DeleteItemModal from '@/components/organisms/DeleteItemModal/DeleteItemModal';
 import SearchCreateBar from '@/components/organisms/SearchCreateBar/SearchCreateBar';
 import UpdateCreateStudentForm from '@/components/organisms/UpdateCreateStudentForm/UpdateCreateStudentForm';
-import CardItem from '@/components/templates/CardItem/CardItem';
+import CardItemTemplate from '@/components/templates/CardItemTemplate/CardItemTemplate';
 import Modal from '@/components/templates/Modal/Modal';
 import useModal from '@/components/templates/Modal/userModa';
 import PageTemplate from '@/components/templates/PageTemplate/PageTemplate';
@@ -100,7 +100,7 @@ const Students = () => {
               },
             ];
             return (
-              <CardItem
+              <CardItemTemplate
                 title={`${firstName} ${lastName}`}
                 imageSrc={avatar}
                 handleDeleteCardItem={() => {
@@ -112,7 +112,7 @@ const Students = () => {
                 key={id}
               >
                 <DetailsList list={detailsList} />
-              </CardItem>
+              </CardItemTemplate>
             );
           })}
         </ul>

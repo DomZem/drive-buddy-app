@@ -1,3 +1,4 @@
+import Avatar from '@/components/atoms/Avatar/Avatar';
 import Button from '@/components/atoms/Button/Button';
 import InputField from '@/components/atoms/InputField/InputField';
 import SelectField from '@/components/atoms/SelectField/SelectField';
@@ -66,10 +67,8 @@ const UpdateCreateStudentForm: FC<UpdateCreateStudentFormProps> = ({ formValues,
     <Formik initialValues={formValues} onSubmit={isUpdateForm ? handleUpdateStudent : handleCreateStudent}>
       <Form>
         <div className="flex flex-col items-center justify-center gap-y-3 bg-rich-black p-4">
-          <img
-            className="h-14 w-14 rounded-full lg:h-24 lg:w-24"
+          <Avatar
             src={file.length === 0 ? 'https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg' : file}
-            alt=""
           />
           <label
             htmlFor="avatar"

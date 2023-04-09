@@ -1,3 +1,4 @@
+import Avatar from '@/components/atoms/Avatar/Avatar';
 import Button from '@/components/atoms/Button/Button';
 import InputField from '@/components/atoms/InputField/InputField';
 import SelectField from '@/components/atoms/SelectField/SelectField';
@@ -15,6 +16,8 @@ interface UpdateCreateCarFormProps {
   formValues: CarType;
   handleCloseModal: () => void;
 }
+
+const fuels = ['Electric', 'Petrol', 'Gas', 'Hybrid'];
 
 const UpdateCreateCarForm: FC<UpdateCreateCarFormProps> = ({ formValues, handleCloseModal }) => {
   const [file, setFile] = useState(formValues.avatar);
@@ -67,10 +70,8 @@ const UpdateCreateCarForm: FC<UpdateCreateCarFormProps> = ({ formValues, handleC
     <Formik initialValues={formValues} onSubmit={isUpdateForm ? handleUpdateCar : handleCreateCar}>
       <Form>
         <div className="flex flex-col items-center justify-center gap-y-3 bg-rich-black p-4">
-          <img
-            className="h-14 w-14 rounded-full lg:h-24 lg:w-24"
+          <Avatar
             src={file.length === 0 ? 'https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg' : file}
-            alt=""
           />
           <label
             htmlFor="avatar"
@@ -83,11 +84,11 @@ const UpdateCreateCarForm: FC<UpdateCreateCarFormProps> = ({ formValues, handleC
         </div>
 
         <div className="grid grid-cols-2 gap-3 bg-white p-4">
-          <InputField id="mark" label="Mark" name="Mark" required />
+          <InputField id="mark" label="Mark" name="mark" required />
           <InputField id="model" label="Model" name="model" required />
           <InputField id="vin" label="Vin" name="vin" required />
           <InputField id="registration" label="Registration" name="registration" required />
-          <InputField id="fuel" label="Fuel" name="fuel" required />
+          <SelectField id="fuel" label="Fuel" name="fuel" options={fuels} />
           <InputField id="yearProduction" label="Production year" name="yearProduction" required />
           <SelectField id="courseCategory" label="Course category" name="courseCategory" options={courseCategories} />
         </div>

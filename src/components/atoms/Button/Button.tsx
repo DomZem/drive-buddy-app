@@ -1,16 +1,15 @@
-import { type FC } from 'react';
+import { type ButtonHTMLAttributes, type FC } from 'react';
 
-interface ButtonProps {
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isRed?: boolean;
   isWhite?: boolean;
   isGreen?: boolean;
   isBlack?: boolean;
   className?: string;
   children: React.ReactNode;
-  [x: string]: any;
 }
 
-const Button: FC<ButtonProps> = ({ isRed, isWhite, isGreen, isBlack, className, children, ...props }) => (
+const Button: FC<ButtonProps> = ({ isRed, isWhite, isGreen, isBlack, className, children }) => (
   <button
     className={`${
       isRed
@@ -23,7 +22,6 @@ const Button: FC<ButtonProps> = ({ isRed, isWhite, isGreen, isBlack, className, 
         ? 'bg-gray-800 text-white hover:bg-gray-900'
         : 'bg-blue-600 text-white hover:bg-blue-700'
     } inline-flex items-center justify-center gap-x-2 rounded-lg p-2 font-medium duration-200 ${className}`}
-    {...props}
   >
     {children}
   </button>

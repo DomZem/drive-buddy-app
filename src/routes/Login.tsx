@@ -44,7 +44,7 @@ const Login = () => {
               <InputField id="email" name="email" type="email" label="Email" />
               <InputField id="password" name="password" type="password" label="Password" />
 
-              <Button className="p-[9px]" type="sumbmit">
+              <Button className="p-[9px]" type="submit">
                 Sign in
               </Button>
             </Form>

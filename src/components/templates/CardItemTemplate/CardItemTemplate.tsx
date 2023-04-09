@@ -1,8 +1,9 @@
+import Avatar from '@/components/atoms/Avatar/Avatar';
 import Button from '@/components/atoms/Button/Button';
 import { type FC } from 'react';
 import { MdDelete, MdUpdate } from 'react-icons/md';
 
-interface CardItemProps {
+interface CardItemTemplateProps {
   title: string;
   imageSrc: string;
   handleDeleteCardItem: () => void;
@@ -11,7 +12,7 @@ interface CardItemProps {
   imageAlt?: string;
 }
 
-const CardItem: FC<CardItemProps> = ({
+const CardItemTemplate: FC<CardItemTemplateProps> = ({
   title,
   imageSrc,
   imageAlt,
@@ -22,11 +23,7 @@ const CardItem: FC<CardItemProps> = ({
   <li className="flex flex-col shadow-lg duration-200 hover:shadow-xl">
     <div className="flex flex-1 flex-col gap-2 rounded-t-lg bg-white p-3 lg:gap-3 lg:p-4">
       <div className="flex flex-col items-center gap-3 lg:gap-4">
-        <img
-          className="h-14 w-14 rounded-full lg:h-24 lg:w-24"
-          src={imageSrc}
-          alt={imageAlt === undefined ? title : imageAlt}
-        />
+        <Avatar src={imageSrc} alt={imageAlt === undefined ? title : imageAlt} />
         <h2 className="text-center text-base font-semibold lg:text-lg">{title}</h2>
       </div>
       {children}
@@ -44,4 +41,4 @@ const CardItem: FC<CardItemProps> = ({
   </li>
 );
 
-export default CardItem;
+export default CardItemTemplate;

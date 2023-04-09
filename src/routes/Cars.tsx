@@ -2,7 +2,8 @@ import DetailsList, { type detailsList } from '@/components/molecules/DetailsLis
 import DeleteItemModal from '@/components/organisms/DeleteItemModal/DeleteItemModal';
 import SearchCreateBar from '@/components/organisms/SearchCreateBar/SearchCreateBar';
 import UpdateCreateCarForm from '@/components/organisms/UpdateCreateCarForm/UpdateCreateCarForm';
-import CardItem from '@/components/templates/CardItem/CardItem';
+import CardItemTemplate from '@/components/templates/CardItemTemplate/CardItemTemplate';
+
 import Modal from '@/components/templates/Modal/Modal';
 import useModal from '@/components/templates/Modal/userModa';
 import PageTemplate from '@/components/templates/PageTemplate/PageTemplate';
@@ -102,7 +103,7 @@ const Cars = () => {
             ];
 
             return (
-              <CardItem
+              <CardItemTemplate
                 title={`${mark} ${model}`}
                 imageSrc={avatar}
                 handleDeleteCardItem={() => handleOpenItem('delete', car)}
@@ -110,7 +111,7 @@ const Cars = () => {
                 key={id}
               >
                 <DetailsList list={detailsList} />
-              </CardItem>
+              </CardItemTemplate>
             );
           })}
         </ul>
