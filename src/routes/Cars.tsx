@@ -124,6 +124,7 @@ const Cars = () => {
             boldText={` ${currentCar.mark} ${currentCar.model}`}
           />
         )}
+
         {currentModal === 'update-create' && (
           <UpdateCreateCarForm formValues={currentCar} handleCloseModal={handleCloseModal} />
         )}

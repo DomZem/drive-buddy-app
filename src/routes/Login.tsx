@@ -1,6 +1,6 @@
 import Button from '@/components/atoms/Button/Button';
+import InputField from '@/components/atoms/InputField/InputField';
 import Logo from '@/components/atoms/Logo/Logo';
-import FormField from '@/components/molecules/FormField/FormField';
 import { auth } from '@/firebase/config';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Form, Formik, type FormikHelpers } from 'formik';
@@ -41,15 +41,9 @@ const Login = () => {
           <h2 className="mb-4 text-center text-xl font-semibold lg:text-2xl">Sign in</h2>
           <Formik initialValues={initialValues} onSubmit={handleLogin}>
             <Form className="flex flex-col gap-y-5">
-              <FormField label="Email" id="email" name="email" type="email" placeholder="Email" required />
-              <FormField
-                label="Password"
-                id="password"
-                name="password"
-                type="password"
-                placeholder="Password"
-                required
-              />
+              <InputField id="email" name="email" type="email" label="Email" />
+              <InputField id="password" name="password" type="password" label="Password" />
+
               <Button className="p-[9px]" type="sumbmit">
                 Sign in
               </Button>

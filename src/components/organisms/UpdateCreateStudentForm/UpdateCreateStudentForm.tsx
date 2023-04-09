@@ -1,14 +1,15 @@
 import Button from '@/components/atoms/Button/Button';
-import FormField from '@/components/molecules/FormField/FormField';
+import InputField from '@/components/atoms/InputField/InputField';
+import SelectField from '@/components/atoms/SelectField/SelectField';
+import { courseCategories } from '@/constants';
 import { db, storage } from '@/firebase/config';
 import { type StudentType } from '@/types';
 import { faker } from '@faker-js/faker';
 import { addDoc, collection, doc, updateDoc } from '@firebase/firestore';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
-import { Field, Form, Formik, type FormikHelpers } from 'formik';
+import { Form, Formik, type FormikHelpers } from 'formik';
 import { useState, type FC } from 'react';
 import { MdClose, MdCloudUpload, MdPersonAddAlt1, MdUpdate } from 'react-icons/md';
-
 interface UpdateCreateStudentFormProps {
   formValues: StudentType;
   handleCloseModal: () => void;
@@ -81,25 +82,14 @@ const UpdateCreateStudentForm: FC<UpdateCreateStudentFormProps> = ({ formValues,
         </div>
 
         <div className="grid grid-cols-2 gap-3 bg-white p-4">
-          <FormField label="First name" id="firstName" name="firstName" type="text" placeholder="First name" required />
-          <FormField label="Last name" id="lastName" name="lastName" type="text" placeholder="Last name" required />
-          <FormField label="Email" id="email" name="email" type="email" placeholder="Email" required />
-          <FormField label="Password" id="password" name="password" type="password" placeholder="Password" required />
-          <FormField label="Phone" id="phone" name="phone" type="text" placeholder="Phone" required />
-          <FormField label="City" id="city" name="city" type="text" placeholder="City" required />
+          <InputField id="firstName" label="First name" name="firstName" required />
+          <InputField id="lastName" label="Last name" name="lastName" required />
+          <InputField id="email" label="Email" name="email" required />
+          <InputField id="password" label="Password" name="password" type="password" required />
+          <InputField id="phone" label="Phone" name="phone" required />
+          <InputField id="city" label="City" name="city" required />
 
-          <div className="col-span-full">
-            <label htmlFor="courseCategory" className="mb-2 block text-sm font-medium text-rich-black">
-              Course category
-            </label>
-            <Field
-              id="courseCategory"
-              name="courseCategory"
-              className="block w-full rounded-lg bg-white p-2 text-sm text-rich-black outline-none"
-              placeholder="AM, B2, C+E ..."
-              required
-            />
-          </div>
+          <SelectField id="courseCategory" label="Course category" name="courseCategory" options={courseCategories} />
         </div>
 
         <div className="flex justify-end gap-x-3 bg-rich-black p-3">

@@ -1,11 +1,13 @@
 import Button from '@/components/atoms/Button/Button';
-import FormField from '@/components/molecules/FormField/FormField';
+import InputField from '@/components/atoms/InputField/InputField';
+import SelectField from '@/components/atoms/SelectField/SelectField';
+import { courseCategories } from '@/constants';
 import { db, storage } from '@/firebase/config';
 import { type CarType } from '@/types';
 import { faker } from '@faker-js/faker';
 import { addDoc, collection, doc, updateDoc } from '@firebase/firestore';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
-import { Field, Form, Formik, type FormikHelpers } from 'formik';
+import { Form, Formik, type FormikHelpers } from 'formik';
 import { useState, type FC } from 'react';
 import { MdClose, MdCloudUpload, MdPersonAddAlt1, MdUpdate } from 'react-icons/md';
 
@@ -81,39 +83,13 @@ const UpdateCreateCarForm: FC<UpdateCreateCarFormProps> = ({ formValues, handleC
         </div>
 
         <div className="grid grid-cols-2 gap-3 bg-white p-4">
-          <FormField label="Mark" id="mark" name="mark" type="text" placeholder="Mark" required />
-          <FormField label="Model" id="model" name="model" type="text" placeholder="Model" required />
-          <FormField label="Vin" id="vin" name="vin" type="text" placeholder="Vin" required />
-          <FormField
-            label="Registration"
-            id="registration"
-            name="registration"
-            type="text"
-            placeholder="Registration"
-            required
-          />
-          <FormField label="Fuel" id="fuel" name="fuel" type="text" placeholder="Fuel" required />
-          <FormField
-            label="Production year"
-            id="yearProduction"
-            name="yearProduction"
-            type="text"
-            placeholder="Production year"
-            required
-          />
-
-          <div className="col-span-full">
-            <label htmlFor="courseCategory" className="mb-2 block text-sm font-medium text-rich-black">
-              Course category
-            </label>
-            <Field
-              id="courseCategory"
-              name="courseCategory"
-              className="block w-full rounded-lg bg-white p-2 text-sm text-rich-black outline-none"
-              placeholder="AM, B2, C+E ..."
-              required
-            />
-          </div>
+          <InputField id="mark" label="Mark" name="Mark" required />
+          <InputField id="model" label="Model" name="model" required />
+          <InputField id="vin" label="Vin" name="vin" required />
+          <InputField id="registration" label="Registration" name="registration" required />
+          <InputField id="fuel" label="Fuel" name="fuel" required />
+          <InputField id="yearProduction" label="Production year" name="yearProduction" required />
+          <SelectField id="courseCategory" label="Course category" name="courseCategory" options={courseCategories} />
         </div>
 
         <div className="flex justify-end gap-x-3 bg-rich-black p-3">

@@ -1,5 +1,5 @@
 import Button from '@/components/atoms/Button/Button';
-import FormField from '@/components/molecules/FormField/FormField';
+import InputField from '@/components/atoms/InputField/InputField';
 import { db, storage } from '@/firebase/config';
 import { type InstructorType } from '@/types';
 import { faker } from '@faker-js/faker';
@@ -81,12 +81,12 @@ const UpdateCreateInstructorForm: FC<UpdateCreateInstructorFormProps> = ({ formV
         </div>
 
         <div className="grid grid-cols-2 gap-3 bg-white p-4">
-          <FormField label="First name" id="firstName" name="firstName" type="text" placeholder="First name" required />
-          <FormField label="Last name" id="lastName" name="lastName" type="text" placeholder="Last name" required />
-          <FormField label="Email" id="email" name="email" type="email" placeholder="Email" required />
-          <FormField label="Password" id="password" name="password" type="password" placeholder="Password" required />
-          <FormField label="Phone" id="phone" name="phone" type="text" placeholder="Phone" required />
-          <FormField label="City" id="city" name="city" type="text" placeholder="City" required />
+          <InputField id="firstName" label="First name" name="firstName" required />
+          <InputField id="lastName" label="Last name" name="lastName" required />
+          <InputField id="email" label="Email" name="email" required />
+          <InputField id="password" label="Password" name="password" type="password" required />
+          <InputField id="phone" label="Phone" name="phone" required />
+          <InputField id="city" label="City" name="city" required />
 
           <div className="col-span-full">
             <label htmlFor="license" className="mb-2 block text-sm font-medium text-rich-black">

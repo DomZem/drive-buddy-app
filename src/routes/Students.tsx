@@ -91,12 +91,12 @@ const Students = () => {
                 value: phone,
               },
               {
-                icon: MdCategory,
-                value: courseCategory,
-              },
-              {
                 icon: MdLocationCity,
                 value: city,
+              },
+              {
+                icon: MdCategory,
+                value: courseCategory,
               },
             ];
             return (
