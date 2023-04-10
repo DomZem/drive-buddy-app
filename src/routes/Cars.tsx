@@ -5,7 +5,7 @@ import UpdateCreateCarForm from '@/components/organisms/UpdateCreateCarForm/Upda
 import CardItemTemplate from '@/components/templates/CardItemTemplate/CardItemTemplate';
 
 import Modal from '@/components/templates/Modal/Modal';
-import useModal from '@/components/templates/Modal/userModa';
+import useModal from '@/components/templates/Modal/useModal';
 import PageTemplate from '@/components/templates/PageTemplate/PageTemplate';
 import { db } from '@/firebase/config';
 import { type CarType, type ModalType } from '@/types';
@@ -74,8 +74,8 @@ const Cars = () => {
   return (
     <PageTemplate>
       <SearchCreateBar
-        onHandleChange={() => console.log('hello!')}
-        onHandleClick={() => handleOpenItem('update-create', initialFormValues)}
+        onInputChange={() => console.log('hello!')}
+        onCreateItem={() => handleOpenItem('update-create', initialFormValues)}
         placeHolderText="Search some cars by name ..."
       />
       {cars.length > 0 ? (
@@ -106,8 +106,8 @@ const Cars = () => {
               <CardItemTemplate
                 title={`${mark} ${model}`}
                 imageSrc={avatar}
-                handleDeleteCardItem={() => handleOpenItem('delete', car)}
-                handleUpdateCardItem={() => handleOpenItem('update-create', car)}
+                onDeleteItem={() => handleOpenItem('delete', car)}
+                onUpdateItem={() => handleOpenItem('update-create', car)}
                 key={id}
               >
                 <DetailsList list={detailsList} />
@@ -117,17 +117,17 @@ const Cars = () => {
         </ul>
       ) : null}
 
-      <Modal isOpen={isOpen} handleClose={handleCloseModal}>
+      <Modal isOpen={isOpen} onCloseModal={handleCloseModal}>
         {currentModal === 'delete' && (
           <DeleteItemModal
-            handleCloseModal={handleCloseModal}
-            handleDeleteItem={handleDeleteCar}
+            onCloseModal={handleCloseModal}
+            onDeleteItem={handleDeleteCar}
             boldText={` ${currentCar.mark} ${currentCar.model}`}
           />
         )}
 
         {currentModal === 'update-create' && (
-          <UpdateCreateCarForm formValues={currentCar} handleCloseModal={handleCloseModal} />
+          <UpdateCreateCarForm formValues={currentCar} onCloseModal={handleCloseModal} />
         )}
       </Modal>
     </PageTemplate>

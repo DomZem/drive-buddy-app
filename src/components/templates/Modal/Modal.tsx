@@ -3,16 +3,16 @@ import ReactModal from 'react-modal';
 
 interface ModalProps {
   isOpen: boolean;
-  handleClose: () => void;
+  onCloseModal: () => void;
   children: React.ReactNode;
 }
 
-const Modal: FC<ModalProps> = ({ handleClose, isOpen, children }) => {
+const Modal: FC<ModalProps> = ({ onCloseModal, isOpen, children }) => {
   return (
     <ReactModal
       isOpen={isOpen}
       appElement={document.getElementById('root') as HTMLElement}
-      onRequestClose={handleClose}
+      onRequestClose={onCloseModal}
       style={{
         overlay: {
           display: 'flex',

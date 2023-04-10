@@ -4,12 +4,12 @@ import { IoWarningOutline } from 'react-icons/io5';
 import { MdClose, MdDelete } from 'react-icons/md';
 
 interface DeleteItemModalProps {
-  handleCloseModal: () => void;
-  handleDeleteItem: () => void;
+  onCloseModal: () => void;
+  onDeleteItem: () => void;
   boldText: string;
 }
 
-const DeleteItemModal: FC<DeleteItemModalProps> = ({ handleCloseModal, handleDeleteItem, boldText }) => {
+const DeleteItemModal: FC<DeleteItemModalProps> = ({ onCloseModal, onDeleteItem, boldText }) => {
   return (
     <>
       <div className="flex flex-col gap-y-3 bg-white p-4">
@@ -26,11 +26,11 @@ const DeleteItemModal: FC<DeleteItemModalProps> = ({ handleCloseModal, handleDel
         </p>
       </div>
       <div className="flex justify-end gap-x-3 bg-rich-black p-3">
-        <Button isWhite onClick={handleCloseModal}>
+        <Button isWhite onClick={onCloseModal}>
           <MdClose className="icon" />
           Cancel
         </Button>
-        <Button isRed onClick={handleDeleteItem} type="submit">
+        <Button isRed onClick={onDeleteItem} type="submit">
           <MdDelete className="icon" />
           Delete
         </Button>

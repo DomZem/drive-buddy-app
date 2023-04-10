@@ -4,8 +4,8 @@ import PageTemplate from '@/components/templates/PageTemplate/PageTemplate';
 const Lessons = () => (
   <PageTemplate>
     <SearchCreateBar
-      onHandleChange={() => console.log('hello!')}
-      onHandleClick={() => console.log('hello!')}
+      onInputChange={() => console.log('hello!')}
+      onCreateItem={() => console.log('hello!')}
       placeHolderText="Search some lessons by name ..."
     />
     <div>Hello from lessons page!</div>

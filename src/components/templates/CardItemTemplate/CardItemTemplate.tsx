@@ -6,8 +6,8 @@ import { MdDelete, MdUpdate } from 'react-icons/md';
 interface CardItemTemplateProps {
   title: string;
   imageSrc: string;
-  handleDeleteCardItem: () => void;
-  handleUpdateCardItem: () => void;
+  onDeleteItem: () => void;
+  onUpdateItem: () => void;
   children: React.ReactNode;
   imageAlt?: string;
 }
@@ -16,8 +16,8 @@ const CardItemTemplate: FC<CardItemTemplateProps> = ({
   title,
   imageSrc,
   imageAlt,
-  handleUpdateCardItem,
-  handleDeleteCardItem,
+  onDeleteItem,
+  onUpdateItem,
   children,
 }) => (
   <li className="flex flex-col shadow-lg duration-200 hover:shadow-xl">
@@ -29,11 +29,11 @@ const CardItemTemplate: FC<CardItemTemplateProps> = ({
       {children}
     </div>
     <div className="flex">
-      <Button isBlack className="flex-1 rounded-none rounded-bl-lg lg:p-3" onClick={handleUpdateCardItem}>
+      <Button isBlack className="flex-1 rounded-none rounded-bl-lg lg:p-3" onClick={onUpdateItem}>
         <MdUpdate className="icon" />
         Update
       </Button>
-      <Button isRed className="flex-1 rounded-none rounded-br-lg lg:p-3" onClick={handleDeleteCardItem}>
+      <Button isRed className="flex-1 rounded-none rounded-br-lg lg:p-3" onClick={onDeleteItem}>
         <MdDelete className="icon" />
         Delete
       </Button>

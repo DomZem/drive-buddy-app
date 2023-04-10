@@ -5,7 +5,7 @@ import UpdateCreateInstructorForm from '@/components/organisms/UpdateCreateInstr
 import CardItemTemplate from '@/components/templates/CardItemTemplate/CardItemTemplate';
 
 import Modal from '@/components/templates/Modal/Modal';
-import useModal from '@/components/templates/Modal/userModa';
+import useModal from '@/components/templates/Modal/useModal';
 import PageTemplate from '@/components/templates/PageTemplate/PageTemplate';
 import { db } from '@/firebase/config';
 import { type InstructorType, type ModalType } from '@/types';
@@ -89,8 +89,8 @@ const Instructors = () => {
   return (
     <PageTemplate>
       <SearchCreateBar
-        onHandleChange={handleFilterName}
-        onHandleClick={() => handleOpenItem('update-create', initialFormValues)}
+        onInputChange={handleFilterName}
+        onCreateItem={() => handleOpenItem('update-create', initialFormValues)}
         placeHolderText="Search some instructors by name ..."
       />
 
@@ -121,11 +121,11 @@ const Instructors = () => {
               <CardItemTemplate
                 title={`${firstName} ${lastName}`}
                 imageSrc={avatar}
-                handleDeleteCardItem={() => {
+                onDeleteItem={() => {
                   handleOpenItem('delete', instructor);
                 }}
                 // When we click to update button on card we pass current instructor data. We just change form values.
-                handleUpdateCardItem={() => {
+                onUpdateItem={() => {
                   handleOpenItem('update-create', instructor);
                 }}
                 key={id}
@@ -137,17 +137,17 @@ const Instructors = () => {
         </ul>
       ) : null}
 
-      <Modal isOpen={isOpen} handleClose={handleCloseModal}>
+      <Modal isOpen={isOpen} onCloseModal={handleCloseModal}>
         {currentModal === 'delete' && (
           <DeleteItemModal
-            handleCloseModal={handleCloseModal}
-            handleDeleteItem={handleDeleteInstructor}
+            onCloseModal={handleCloseModal}
+            onDeleteItem={handleDeleteInstructor}
             boldText={` ${currentInstructor.firstName} ${currentInstructor.lastName}`}
           />
         )}
 
         {currentModal === 'update-create' && (
-          <UpdateCreateInstructorForm formValues={currentInstructor} handleCloseModal={handleCloseModal} />
+          <UpdateCreateInstructorForm formValues={currentInstructor} onCloseModal={handleCloseModal} />
         )}
       </Modal>
     </PageTemplate>

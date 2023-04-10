@@ -1,5 +1,5 @@
-import Avatar from '@/components/atoms/Avatar/Avatar';
 import Button from '@/components/atoms/Button/Button';
+import ImageUploadField from '@/components/atoms/ImageUploadField/ImageUploadField';
 import InputField from '@/components/atoms/InputField/InputField';
 import { db, storage } from '@/firebase/config';
 import { type InstructorType } from '@/types';
@@ -8,14 +8,14 @@ import { addDoc, collection, doc, updateDoc } from '@firebase/firestore';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { Field, Form, Formik, type FormikHelpers } from 'formik';
 import { useState, type FC } from 'react';
-import { MdClose, MdCloudUpload, MdPersonAddAlt1, MdUpdate } from 'react-icons/md';
+import { MdClose, MdPersonAddAlt1, MdUpdate } from 'react-icons/md';
 
 interface UpdateCreateInstructorFormProps {
   formValues: InstructorType;
-  handleCloseModal: () => void;
+  onCloseModal: () => void;
 }
 
-const UpdateCreateInstructorForm: FC<UpdateCreateInstructorFormProps> = ({ formValues, handleCloseModal }) => {
+const UpdateCreateInstructorForm: FC<UpdateCreateInstructorFormProps> = ({ formValues, onCloseModal }) => {
   const [file, setFile] = useState(formValues.avatar);
 
   // When there is an ID in formValues we have already created user and we want update data. When the ID is empty we want to create user.
@@ -29,7 +29,7 @@ const UpdateCreateInstructorForm: FC<UpdateCreateInstructorFormProps> = ({ formV
       console.log(e);
     } finally {
       setSubmitting(false);
-      handleCloseModal();
+      onCloseModal();
     }
   };
 
@@ -41,7 +41,7 @@ const UpdateCreateInstructorForm: FC<UpdateCreateInstructorFormProps> = ({ formV
       console.log(e);
     } finally {
       setSubmitting(false);
-      handleCloseModal();
+      onCloseModal();
     }
   };
 
@@ -66,17 +66,7 @@ const UpdateCreateInstructorForm: FC<UpdateCreateInstructorFormProps> = ({ formV
     <Formik initialValues={formValues} onSubmit={isUpdateForm ? handleUpdateInstructor : handleCreateInstructor}>
       <Form>
         <div className="flex flex-col items-center justify-center gap-y-3 bg-rich-black p-4">
-          <Avatar
-            src={file.length === 0 ? 'https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg' : file}
-          />
-          <label
-            htmlFor="avatar"
-            className="flex cursor-pointer items-center gap-x-2 rounded-lg bg-white p-2 text-sm font-medium text-rich-black"
-          >
-            <MdCloudUpload className="text-base lg:text-xl" />
-            Upload avatar
-          </label>
-          <input id="avatar" type="file" className="hidden" onChange={handleUploadImage} />
+          <ImageUploadField file={file} onChange={handleUploadImage} />
         </div>
 
         <div className="grid grid-cols-2 gap-3 bg-white p-4">
@@ -102,7 +92,7 @@ const UpdateCreateInstructorForm: FC<UpdateCreateInstructorFormProps> = ({ formV
         </div>
 
         <div className="flex justify-end gap-x-3 bg-rich-black p-3">
-          <Button isWhite onClick={handleCloseModal}>
+          <Button isWhite onClick={onCloseModal}>
             <MdClose className="icon" />
             Cancel
           </Button>
