@@ -7,8 +7,9 @@ import { db, storage } from '@/firebase/config';
 import { type CarType } from '@/types';
 import { faker } from '@faker-js/faker';
 import { addDoc, collection, doc, updateDoc } from '@firebase/firestore';
+import { Dialog } from '@headlessui/react';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
-import { Form, Formik, type FormikHelpers } from 'formik';
+import { Formik, type FormikHelpers } from 'formik';
 import { useState, type FC } from 'react';
 import { MdClose, MdPersonAddAlt1, MdUpdate } from 'react-icons/md';
 
@@ -68,8 +69,8 @@ const UpdateCreateCarForm: FC<UpdateCreateCarFormProps> = ({ formValues, onClose
 
   return (
     <Formik initialValues={formValues} onSubmit={isUpdateForm ? handleUpdateCar : handleCreateCar}>
-      <Form>
-        <div className="flex flex-col items-center justify-center gap-y-3 bg-rich-black p-4">
+      <Dialog.Panel className="w-full max-w-xl">
+        <div className="flex flex-col items-center justify-center gap-y-3 rounded-t-lg bg-rich-black p-4">
           <ImageUploadField file={file} onChange={handleUploadImage} />
         </div>
 
@@ -83,7 +84,7 @@ const UpdateCreateCarForm: FC<UpdateCreateCarFormProps> = ({ formValues, onClose
           <SelectField id="courseCategory" label="Course category" name="courseCategory" options={courseCategories} />
         </div>
 
-        <div className="flex justify-end gap-x-3 bg-rich-black p-3">
+        <div className="flex justify-end gap-x-3 rounded-b-lg bg-rich-black p-3">
           <Button isWhite onClick={onCloseModal}>
             <MdClose className="icon" />
             Cancel
@@ -93,7 +94,7 @@ const UpdateCreateCarForm: FC<UpdateCreateCarFormProps> = ({ formValues, onClose
             {isUpdateForm ? 'Update' : 'Create'}
           </Button>
         </div>
-      </Form>
+      </Dialog.Panel>
     </Formik>
   );
 };
