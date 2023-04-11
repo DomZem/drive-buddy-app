@@ -31,6 +31,9 @@ const Cars = () => {
   const [currentCar, setCurrentCar] = useState<CarType>(cars[0]);
   const [currentModal, setCurrentModal] = useState<ModalType>('update-create');
 
+  const [filterByName, setFilterByName] = useState('');
+  const [filteredCars, setFilteredCars] = useState<CarType[]>([]);
+
   const { isOpen, handleOpenModal, handleCloseModal } = useModal();
   const carsCollectionRef = collection(db, 'cars');
 
@@ -67,6 +70,20 @@ const Cars = () => {
     handleCloseModal();
   };
 
+  const handleFilterName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFilterByName(e.target.value);
+  };
+
+  useEffect(() => {
+    const filtered = cars.filter((car) => {
+      const carMarkName = car.mark.toLowerCase();
+      const carModelName = car.model.toLowerCase();
+
+      return `${carMarkName} ${carModelName}`.includes(filterByName.toLowerCase());
+    });
+    setFilteredCars(filtered);
+  }, [filterByName, cars]);
+
   useEffect(() => {
     void getCars();
   }, []);
@@ -74,13 +91,13 @@ const Cars = () => {
   return (
     <PageTemplate>
       <SearchCreateBar
-        onInputChange={() => console.log('hello!')}
+        onInputChange={handleFilterName}
         onCreateItem={() => handleOpenItem('update-create', initialFormValues)}
         placeHolderText="Search some cars by name ..."
       />
-      {cars.length > 0 ? (
+      {filteredCars.length > 0 ? (
         <ul className="grid gap-2 p-2 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 lg:gap-3 lg:p-3 xl:grid-cols-3 2xl:grid-cols-4">
-          {cars.map((car) => {
+          {filteredCars.map((car) => {
             const { mark, model, fuel, avatar, yearProduction, vin, registration, id } = car;
 
             const detailsList: detailsList = [

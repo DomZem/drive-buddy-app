@@ -28,6 +28,8 @@ const Students = () => {
   const [students, setStudents] = useState<StudentType[]>([]);
   const [currentStudent, setCurrentStudent] = useState<StudentType>(students[0]);
   const [currentModal, setCurrentModal] = useState<ModalType>('update-create');
+  const [filterByName, setFilterByName] = useState('');
+  const [filteredStudents, setFilteredStudents] = useState<StudentType[]>([]);
 
   const { isOpen, handleOpenModal, handleCloseModal } = useModal();
   const studentsCollectionRef = collection(db, 'students');
@@ -66,6 +68,20 @@ const Students = () => {
     handleCloseModal();
   };
 
+  const handleFilterName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFilterByName(e.target.value);
+  };
+
+  useEffect(() => {
+    const filtered = students.filter((student) => {
+      const studentFirstName = student.firstName.toLowerCase();
+      const studentLastName = student.lastName.toLowerCase();
+
+      return `${studentFirstName} ${studentLastName}`.includes(filterByName.toLowerCase());
+    });
+    setFilteredStudents(filtered);
+  }, [filterByName, students]);
+
   useEffect(() => {
     void getStudents();
   }, []);
@@ -73,13 +89,13 @@ const Students = () => {
   return (
     <PageTemplate>
       <SearchCreateBar
-        onInputChange={() => console.log('hello!')}
+        onInputChange={handleFilterName}
         onCreateItem={() => handleOpenItem('update-create', initialFormValues)}
         placeHolderText="Search some students by name ..."
       />
-      {students.length > 0 ? (
+      {filteredStudents.length > 0 ? (
         <ul className="grid gap-2 p-2 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 lg:gap-3 lg:p-3 xl:grid-cols-3 2xl:grid-cols-4">
-          {students.map((student) => {
+          {filteredStudents.map((student) => {
             const { firstName, lastName, email, avatar, phone, courseCategory, city, id } = student;
             const detailsList: detailsList = [
               {

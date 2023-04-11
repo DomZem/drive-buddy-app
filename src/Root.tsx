@@ -1,3 +1,4 @@
+import { Toaster } from 'react-hot-toast';
 import { Navigate, Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 import ProtectedRoute from './helpers/ProtectedRoute';
 import { AuthProvider } from './providers/AuthProvider';
@@ -23,9 +24,12 @@ const router = createBrowserRouter(
 );
 
 const Root = () => (
-  <AuthProvider>
-    <RouterProvider router={router} />
-  </AuthProvider>
+  <>
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+    <Toaster />
+  </>
 );
 
 export default Root;

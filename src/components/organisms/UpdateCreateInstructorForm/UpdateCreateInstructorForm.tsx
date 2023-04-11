@@ -1,15 +1,14 @@
 import Button from '@/components/atoms/Button/Button';
-import ImageUploadField from '@/components/atoms/ImageUploadField/ImageUploadField';
 import InputField from '@/components/atoms/InputField/InputField';
+import FormTemplate from '@/components/templates/FormTemplate/FormTemplate';
 import { db, storage } from '@/firebase/config';
 import { type InstructorType } from '@/types';
 import { faker } from '@faker-js/faker';
 import { addDoc, collection, doc, updateDoc } from '@firebase/firestore';
-import { Dialog } from '@headlessui/react';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
-import { Field, Form, Formik, type FormikHelpers } from 'formik';
+import { Field, Formik, type FormikHelpers } from 'formik';
 import { useState, type FC } from 'react';
-import { MdClose, MdPersonAddAlt1, MdUpdate } from 'react-icons/md';
+import { MdPersonAddAlt1, MdUpdate } from 'react-icons/md';
 
 interface UpdateCreateInstructorFormProps {
   formValues: InstructorType;
@@ -65,44 +64,32 @@ const UpdateCreateInstructorForm: FC<UpdateCreateInstructorFormProps> = ({ formV
 
   return (
     <Formik initialValues={formValues} onSubmit={isUpdateForm ? handleUpdateInstructor : handleCreateInstructor}>
-      <Dialog.Panel as={Form} className="w-full max-w-xl">
-        <div className="flex flex-col items-center justify-center gap-y-3 rounded-t-lg bg-rich-black p-4">
-          <ImageUploadField file={file} onChange={handleUploadImage} />
+      <FormTemplate file={file} onUploadImage={handleUploadImage} onCloseModal={onCloseModal}>
+        <InputField id="firstName" label="First name" name="firstName" required />
+        <InputField id="lastName" label="Last name" name="lastName" required />
+        <InputField id="email" label="Email" name="email" required />
+        <InputField id="password" label="Password" name="password" type="password" required />
+        <InputField id="phone" label="Phone" name="phone" required />
+        <InputField id="city" label="City" name="city" required />
+
+        <div className="col-span-full">
+          <label htmlFor="license" className="mb-2 block text-sm font-medium text-rich-black">
+            License
+          </label>
+          <Field
+            id="license"
+            name="license"
+            className="block w-full rounded-lg bg-white p-2 text-sm text-rich-black outline-none"
+            placeholder="AM, B2, C+E ..."
+            required
+          />
         </div>
 
-        <div className="grid grid-cols-2 gap-3 bg-white p-4">
-          <InputField id="firstName" label="First name" name="firstName" required />
-          <InputField id="lastName" label="Last name" name="lastName" required />
-          <InputField id="email" label="Email" name="email" required />
-          <InputField id="password" label="Password" name="password" type="password" required />
-          <InputField id="phone" label="Phone" name="phone" required />
-          <InputField id="city" label="City" name="city" required />
-
-          <div className="col-span-full">
-            <label htmlFor="license" className="mb-2 block text-sm font-medium text-rich-black">
-              License
-            </label>
-            <Field
-              id="license"
-              name="license"
-              className="block w-full rounded-lg bg-white p-2 text-sm text-rich-black outline-none"
-              placeholder="AM, B2, C+E ..."
-              required
-            />
-          </div>
-        </div>
-
-        <div className="flex justify-end gap-x-3 rounded-b-lg bg-rich-black p-3">
-          <Button isWhite onClick={onCloseModal}>
-            <MdClose className="icon" />
-            Cancel
-          </Button>
-          <Button isGreen type="submit">
-            {isUpdateForm ? <MdUpdate className="icon" /> : <MdPersonAddAlt1 className="icon" />}
-            {isUpdateForm ? 'Update' : 'Create'}
-          </Button>
-        </div>
-      </Dialog.Panel>
+        <Button isGreen type="submit">
+          {isUpdateForm ? <MdUpdate className="icon" /> : <MdPersonAddAlt1 className="icon" />}
+          {isUpdateForm ? 'Update' : 'Create'}
+        </Button>
+      </FormTemplate>
     </Formik>
   );
 };

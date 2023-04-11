@@ -1,17 +1,16 @@
 import Button from '@/components/atoms/Button/Button';
-import ImageUploadField from '@/components/atoms/ImageUploadField/ImageUploadField';
 import InputField from '@/components/atoms/InputField/InputField';
 import SelectField from '@/components/atoms/SelectField/SelectField';
+import FormTemplate from '@/components/templates/FormTemplate/FormTemplate';
 import { courseCategories } from '@/constants';
 import { db, storage } from '@/firebase/config';
 import { type CarType } from '@/types';
 import { faker } from '@faker-js/faker';
 import { addDoc, collection, doc, updateDoc } from '@firebase/firestore';
-import { Dialog } from '@headlessui/react';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { Formik, type FormikHelpers } from 'formik';
 import { useState, type FC } from 'react';
-import { MdClose, MdPersonAddAlt1, MdUpdate } from 'react-icons/md';
+import { MdPersonAddAlt1, MdUpdate } from 'react-icons/md';
 
 interface UpdateCreateCarFormProps {
   formValues: CarType;
@@ -69,32 +68,20 @@ const UpdateCreateCarForm: FC<UpdateCreateCarFormProps> = ({ formValues, onClose
 
   return (
     <Formik initialValues={formValues} onSubmit={isUpdateForm ? handleUpdateCar : handleCreateCar}>
-      <Dialog.Panel className="w-full max-w-xl">
-        <div className="flex flex-col items-center justify-center gap-y-3 rounded-t-lg bg-rich-black p-4">
-          <ImageUploadField file={file} onChange={handleUploadImage} />
-        </div>
+      <FormTemplate file={file} onUploadImage={handleUploadImage} onCloseModal={onCloseModal}>
+        <InputField id="mark" label="Mark" name="mark" required />
+        <InputField id="model" label="Model" name="model" required />
+        <InputField id="vin" label="Vin" name="vin" required />
+        <InputField id="registration" label="Registration" name="registration" required />
+        <SelectField id="fuel" label="Fuel" name="fuel" options={fuels} />
+        <InputField id="yearProduction" label="Production year" name="yearProduction" required />
+        <SelectField id="courseCategory" label="Course category" name="courseCategory" options={courseCategories} />
 
-        <div className="grid grid-cols-2 gap-3 bg-white p-4">
-          <InputField id="mark" label="Mark" name="mark" required />
-          <InputField id="model" label="Model" name="model" required />
-          <InputField id="vin" label="Vin" name="vin" required />
-          <InputField id="registration" label="Registration" name="registration" required />
-          <SelectField id="fuel" label="Fuel" name="fuel" options={fuels} />
-          <InputField id="yearProduction" label="Production year" name="yearProduction" required />
-          <SelectField id="courseCategory" label="Course category" name="courseCategory" options={courseCategories} />
-        </div>
-
-        <div className="flex justify-end gap-x-3 rounded-b-lg bg-rich-black p-3">
-          <Button isWhite onClick={onCloseModal}>
-            <MdClose className="icon" />
-            Cancel
-          </Button>
-          <Button isGreen type="submit">
-            {isUpdateForm ? <MdUpdate className="icon" /> : <MdPersonAddAlt1 className="icon" />}
-            {isUpdateForm ? 'Update' : 'Create'}
-          </Button>
-        </div>
-      </Dialog.Panel>
+        <Button isGreen type="submit">
+          {isUpdateForm ? <MdUpdate className="icon" /> : <MdPersonAddAlt1 className="icon" />}
+          {isUpdateForm ? 'Update' : 'Create'}
+        </Button>
+      </FormTemplate>
     </Formik>
   );
 };

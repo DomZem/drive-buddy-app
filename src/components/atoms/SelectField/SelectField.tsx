@@ -10,7 +10,7 @@ interface SelectFieldProps extends SelectHTMLAttributes<HTMLSelectElement> {
 
 const SelectField: FC<SelectFieldProps> = ({ id, name, label, options, ...props }) => (
   <div className="relative">
-    <Field id={id} as="select" name={name} className="field peer peer-focus:text-gray-900" {...props}>
+    <Field id={id} as="select" name={name} className="field peer p-[6.25px] peer-focus:text-gray-900" {...props}>
       {options.map((value) => (
         <option value={value} key={value}>
           {value}

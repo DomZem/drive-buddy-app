@@ -4,6 +4,7 @@ import Logo from '@/components/atoms/Logo/Logo';
 import { auth } from '@/firebase/config';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Form, Formik, type FormikHelpers } from 'formik';
+import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router';
 
 const initialValues = {
@@ -26,7 +27,7 @@ const Login = () => {
       await signInWithEmailAndPassword(auth, email, password);
       navitage('/lessons');
     } catch (e) {
-      console.log(e);
+      toast.error('Invalid email or password');
     }
   };
 

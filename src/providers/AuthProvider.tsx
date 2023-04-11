@@ -1,6 +1,6 @@
 import { auth } from '@/firebase/config';
 import { onAuthStateChanged } from 'firebase/auth';
-import React, { useContext, useState, type FC } from 'react';
+import React, { useContext, useEffect, useState, type FC } from 'react';
 
 const AuthContext = React.createContext<{ isUserLogin: boolean } | null>(null);
 
@@ -11,13 +11,19 @@ interface AuthProviderProps {
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const [isUserLogin, setIsUserLogin] = useState(false);
 
-  onAuthStateChanged(auth, (user) => {
-    if (user != null) {
-      setIsUserLogin(true);
-    } else {
-      setIsUserLogin(false);
-    }
-  });
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, async (user) => {
+      if (user != null) {
+        setIsUserLogin(true);
+      } else {
+        setIsUserLogin(false);
+      }
+    });
+
+    return () => {
+      unsub();
+    };
+  }, [isUserLogin]);
 
   return <AuthContext.Provider value={{ isUserLogin }}>{children}</AuthContext.Provider>;
 };

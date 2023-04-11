@@ -76,8 +76,9 @@ const Instructors = () => {
   useEffect(() => {
     const filtered = instructors.filter((instructor) => {
       const instructorFirstName = instructor.firstName.toLowerCase();
+      const instructorLastName = instructor.lastName.toLowerCase();
 
-      return instructorFirstName.includes(filterByName.toLowerCase());
+      return `${instructorFirstName} ${instructorLastName}`.includes(filterByName.toLowerCase());
     });
     setFilteredInstructors(filtered);
   }, [filterByName, instructors]);
