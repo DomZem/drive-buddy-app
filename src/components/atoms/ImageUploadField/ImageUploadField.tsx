@@ -1,6 +1,7 @@
+import emptyImage from '@/assets/img/empty-image.png';
 import { type FC } from 'react';
-import { BsImageFill } from 'react-icons/bs';
 import { MdEdit } from 'react-icons/md';
+import Avatar from '../Avatar/Avatar';
 
 interface ImageUploadFieldProps {
   file: string;
@@ -18,13 +19,7 @@ const ImageUploadField: FC<ImageUploadFieldProps> = ({ file, onChange }) => (
         <MdEdit className="text-sm" />
       </label>
     </div>
-    <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-white p-1 lg:h-24 lg:w-24">
-      {file.length === 0 ? (
-        <BsImageFill className="text-2xl lg:text-3xl" />
-      ) : (
-        <img className="rounded-full" src={file} />
-      )}
-    </div>
+    <Avatar src={file.length === 0 ? emptyImage : file} />
   </div>
 );
 

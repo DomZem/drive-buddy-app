@@ -10,6 +10,7 @@ import { db } from '@/firebase/config';
 import { type ModalType, type StudentType } from '@/types';
 import { collection, deleteDoc, doc, getDocs } from '@firebase/firestore';
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { MdCategory, MdEmail, MdLocationCity, MdSmartphone } from 'react-icons/md';
 
 const initialFormValues: StudentType = {
@@ -62,10 +63,15 @@ const Students = () => {
   };
 
   const handleDeleteStudent = async () => {
-    const studentsDoc = doc(db, 'students', currentStudent.id);
-    await deleteDoc(studentsDoc);
-    void getStudents();
-    handleCloseModal();
+    const studentDoc = doc(db, 'students', currentStudent.id);
+    try {
+      await deleteDoc(studentDoc);
+      toast.success('The Student has been deleted');
+    } catch (e) {
+      toast.error('Something went wrong. The Student has not been deleted');
+    } finally {
+      handleCloseModal();
+    }
   };
 
   const handleFilterName = (e: React.ChangeEvent<HTMLInputElement>) => {

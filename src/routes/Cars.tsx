@@ -11,6 +11,7 @@ import { db } from '@/firebase/config';
 import { type CarType, type ModalType } from '@/types';
 import { collection, deleteDoc, doc, getDocs } from '@firebase/firestore';
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { GiFuelTank, GiKeyCard } from 'react-icons/gi';
 import { MdDateRange } from 'react-icons/md';
 import { RxIdCard } from 'react-icons/rx';
@@ -37,6 +38,7 @@ const Cars = () => {
   const [filteredCars, setFilteredCars] = useState<CarType[]>([]);
 
   const { isOpen, handleOpenModal, handleCloseModal } = useModal();
+
   const carsCollectionRef = collection(db, 'cars');
 
   const getCars = async () => {
@@ -69,9 +71,14 @@ const Cars = () => {
 
   const handleDeleteCar = async () => {
     const carDoc = doc(db, 'cars', currentCar.id);
-    await deleteDoc(carDoc);
-    void getCars();
-    handleCloseModal();
+    try {
+      await deleteDoc(carDoc);
+      toast.success('The Car has been deleted');
+    } catch (e) {
+      toast.error('Something went wrong. The Car has not been deleted');
+    } finally {
+      handleCloseModal();
+    }
   };
 
   const handleFilterName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -99,6 +106,7 @@ const Cars = () => {
         onCreateItem={() => handleOpenItem('update-create', initialFormValues)}
         placeHolderText="Search some cars by name ..."
       />
+
       {filteredCars.length > 0 ? (
         <ul className="grid gap-2 p-2 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 lg:gap-3 lg:p-3 xl:grid-cols-3 2xl:grid-cols-4">
           {filteredCars.map((car) => {

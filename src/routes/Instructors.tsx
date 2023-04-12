@@ -3,7 +3,6 @@ import DeleteItemModal from '@/components/organisms/DeleteItemModal/DeleteItemMo
 import SearchCreateBar from '@/components/organisms/SearchCreateBar/SearchCreateBar';
 import UpdateCreateInstructorForm from '@/components/organisms/UpdateCreateInstructorForm/UpdateCreateInstructorForm';
 import CardItemTemplate from '@/components/templates/CardItemTemplate/CardItemTemplate';
-
 import Modal from '@/components/templates/Modal/Modal';
 import useModal from '@/components/templates/Modal/useModal';
 import PageTemplate from '@/components/templates/PageTemplate/PageTemplate';
@@ -11,6 +10,7 @@ import { db } from '@/firebase/config';
 import { type InstructorType, type ModalType } from '@/types';
 import { collection, deleteDoc, doc, getDocs } from '@firebase/firestore';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-hot-toast';
 import { MdCategory, MdEmail, MdLocationCity, MdSmartphone } from 'react-icons/md';
 
 const initialFormValues: InstructorType = {
@@ -47,9 +47,14 @@ const Instructors = () => {
 
   const handleDeleteInstructor = async () => {
     const instructorDoc = doc(db, 'instructors', currentInstructor.id);
-    await deleteDoc(instructorDoc);
-    void getInstructors();
-    handleCloseModal();
+    try {
+      await deleteDoc(instructorDoc);
+      toast.success('The Instructor has been deleted');
+    } catch (e) {
+      toast.error('Something went wrong. The Instructor has not been deleted');
+    } finally {
+      handleCloseModal();
+    }
   };
 
   const getInstructors = async () => {
