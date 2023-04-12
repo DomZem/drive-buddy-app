@@ -24,6 +24,8 @@ const initialFormValues: CarType = {
   vin: '',
   registration: '',
   yearProduction: '',
+  courseCategory: '',
+  reviewDate: new Date(),
 };
 
 const Cars = () => {
@@ -46,9 +48,11 @@ const Cars = () => {
         model: doc.data().model,
         avatar: doc.data().avatar,
         yearProduction: doc.data().yearProduction,
+        reviewDate: doc.data().reviewDate,
         fuel: doc.data().fuel,
         vin: doc.data().vin,
         registration: doc.data().registration,
+        courseCategory: doc.data().courseCategory,
       }))
     );
   };
@@ -98,7 +102,7 @@ const Cars = () => {
       {filteredCars.length > 0 ? (
         <ul className="grid gap-2 p-2 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 lg:gap-3 lg:p-3 xl:grid-cols-3 2xl:grid-cols-4">
           {filteredCars.map((car) => {
-            const { mark, model, fuel, avatar, yearProduction, vin, registration, id } = car;
+            const { mark, model, fuel, avatar, reviewDate, vin, registration, id } = car;
 
             const detailsList: detailsList = [
               {
@@ -115,7 +119,7 @@ const Cars = () => {
               },
               {
                 icon: MdDateRange,
-                value: yearProduction,
+                value: reviewDate,
               },
             ];
 

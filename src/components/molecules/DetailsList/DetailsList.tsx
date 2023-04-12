@@ -3,7 +3,7 @@ import { type IconType } from 'react-icons/lib';
 
 export type detailsList = Array<{
   icon: IconType;
-  value: string | number;
+  value: any;
 }>;
 
 export interface DetailsListProps {

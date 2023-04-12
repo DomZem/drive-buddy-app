@@ -11,7 +11,8 @@
   li,
   button,
   label,
-  input {
+  input,
+  select {
     @apply text-xs lg:text-sm;
   }
 

@@ -7,7 +7,7 @@ export interface InstructorType {
   phone: string;
   email: string;
   password: string;
-  license: string;
+  licenses: string;
 }
 
 export interface CarType {
@@ -15,11 +15,12 @@ export interface CarType {
   mark: string;
   model: string;
   avatar: string;
-  // reviewDate: Date;
+  reviewDate: Date;
   yearProduction: string;
   fuel: string;
   vin: string;
   registration: string;
+  courseCategory: string;
 }
 
 export interface StudentType {

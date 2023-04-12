@@ -3,24 +3,25 @@ import InputField from '@/components/atoms/InputField/InputField';
 import Logo from '@/components/atoms/Logo/Logo';
 import { auth } from '@/firebase/config';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { Form, Formik, type FormikHelpers } from 'formik';
+import { Form, Formik } from 'formik';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router';
-
-const initialValues = {
-  email: '',
-  password: '',
-};
+import * as Yup from 'yup';
 
 interface LoginFieldsType {
   email: string;
   password: string;
 }
 
+const initialValues = {
+  email: '',
+  password: '',
+};
+
 const Login = () => {
   const navitage = useNavigate();
 
-  const handleLogin = async (values: LoginFieldsType, { setSubmitting }: FormikHelpers<LoginFieldsType>) => {
+  const handleLogin = async (values: LoginFieldsType) => {
     const email = values.email;
     const password = values.password;
     try {
@@ -40,11 +41,18 @@ const Login = () => {
         </header>
         <section className="w-full rounded-lg bg-white p-5 shadow-lg">
           <h2 className="mb-4 text-center text-xl font-semibold lg:text-2xl">Sign in</h2>
-          <Formik initialValues={initialValues} onSubmit={handleLogin}>
+          <Formik
+            initialValues={initialValues}
+            onSubmit={handleLogin}
+            validationSchema={Yup.object({
+              email: Yup.string().email('Invalid email addresss').required('Required'),
+              password: Yup.string().required('Required'),
+            })}
+          >
             <Form className="flex flex-col gap-y-5">
               <InputField id="email" name="email" type="email" label="Email" />
-              <InputField id="password" name="password" type="password" label="Password" />
 
+              <InputField id="password" name="password" type="password" label="Password" />
               <Button className="p-[9px]" type="submit">
                 Sign in
               </Button>

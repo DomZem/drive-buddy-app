@@ -22,7 +22,7 @@ const initialFormValues: InstructorType = {
   phone: '',
   email: '',
   password: '',
-  license: '',
+  licenses: '',
 };
 
 const Instructors = () => {
@@ -64,7 +64,7 @@ const Instructors = () => {
         phone: doc.data().phone,
         email: doc.data().email,
         password: doc.data().password,
-        license: doc.data().license,
+        licenses: doc.data().licenses,
       }))
     );
   };
@@ -98,8 +98,8 @@ const Instructors = () => {
       {filteredInstructors.length > 0 ? (
         <ul className="grid gap-2 p-2 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 lg:gap-3 lg:p-3 xl:grid-cols-3 2xl:grid-cols-4">
           {filteredInstructors.map((instructor) => {
-            const { firstName, lastName, email, avatar, phone, license, city, id } = instructor;
-            const licenseSplit = license.split(', ').toString();
+            const { firstName, lastName, email, avatar, phone, licenses, city, id } = instructor;
+            const licenseSplit = licenses.split(', ').toString();
             const detailsList: detailsList = [
               {
                 icon: MdEmail,

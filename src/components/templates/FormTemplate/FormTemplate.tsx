@@ -18,7 +18,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ file, onUploadImage, onCloseModal
       <ImageUploadField file={file} onChange={onUploadImage} />
     </div>
 
-    {/* The last item is always a button to submit */}
+    {/* The last item is always a button to submit, others components will be always there */}
     <div className="grid grid-cols-2 gap-3 bg-white p-4">{children.slice(0, children.length - 1)}</div>
 
     <div className="flex justify-end gap-x-3 rounded-b-lg bg-rich-black p-3">

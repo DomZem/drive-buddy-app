@@ -24,7 +24,7 @@ const CardItemTemplate: FC<CardItemTemplateProps> = ({
     <div className="flex flex-1 flex-col gap-2 rounded-t-lg bg-white p-3 lg:gap-3 lg:p-4">
       <div className="flex flex-col items-center gap-3 lg:gap-4">
         <Avatar src={imageSrc} alt={imageAlt === undefined ? title : imageAlt} />
-        <h2 className="text-center text-base font-semibold lg:text-lg">{title}</h2>
+        <h2 className="text-center text-base font-semibold capitalize lg:text-lg">{title}</h2>
       </div>
       {children}
     </div>
