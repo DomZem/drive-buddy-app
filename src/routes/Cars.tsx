@@ -9,6 +9,7 @@ import PageTemplate from '@/components/templates/PageTemplate/PageTemplate';
 import { db } from '@/firebase/config';
 import { type CarType, type ModalType } from '@/types';
 import { collection, deleteDoc, doc, onSnapshot } from '@firebase/firestore';
+import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { GiFuelTank, GiKeyCard } from 'react-icons/gi';
@@ -26,6 +27,18 @@ const initialFormValues: CarType = {
   yearProduction: '',
   courseCategory: '',
   reviewDate: new Date(),
+};
+
+const container = {
+  hidden: { opacity: 1, scale: 0 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      delayChildren: 0.3,
+      staggerChildren: 0.2,
+    },
+  },
 };
 
 const Cars = () => {
@@ -110,7 +123,12 @@ const Cars = () => {
       />
 
       {filteredCars.length > 0 ? (
-        <ul className="grid gap-2 p-2 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 lg:gap-3 lg:p-3 xl:grid-cols-3 2xl:grid-cols-4">
+        <motion.ul
+          className="container grid gap-2 p-2 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 lg:gap-3 lg:p-3 xl:grid-cols-3 2xl:grid-cols-4"
+          variants={container}
+          initial="hidden"
+          animate="visible"
+        >
           {filteredCars.map((car) => {
             const { mark, model, fuel, avatar, reviewDate, vin, registration, id } = car;
 
@@ -145,7 +163,7 @@ const Cars = () => {
               </CardItemTemplate>
             );
           })}
-        </ul>
+        </motion.ul>
       ) : null}
 
       <Modal isOpen={isOpen} onCloseModal={handleCloseModal}>

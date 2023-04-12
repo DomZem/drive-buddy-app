@@ -9,6 +9,7 @@ import PageTemplate from '@/components/templates/PageTemplate/PageTemplate';
 import { db } from '@/firebase/config';
 import { type ModalType, type StudentType } from '@/types';
 import { collection, deleteDoc, doc, onSnapshot } from '@firebase/firestore';
+import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { MdCategory, MdEmail, MdLocationCity, MdSmartphone } from 'react-icons/md';
@@ -23,6 +24,18 @@ const initialFormValues: StudentType = {
   email: '',
   password: '',
   courseCategory: '',
+};
+
+const container = {
+  hidden: { opacity: 1, scale: 0 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      delayChildren: 0.3,
+      staggerChildren: 0.2,
+    },
+  },
 };
 
 const Students = () => {
@@ -105,7 +118,12 @@ const Students = () => {
         placeHolderText="Search some students by name ..."
       />
       {filteredStudents.length > 0 ? (
-        <ul className="grid gap-2 p-2 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 lg:gap-3 lg:p-3 xl:grid-cols-3 2xl:grid-cols-4">
+        <motion.ul
+          className="container grid gap-2 p-2 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 lg:gap-3 lg:p-3 xl:grid-cols-3 2xl:grid-cols-4"
+          variants={container}
+          initial="hidden"
+          animate="visible"
+        >
           {filteredStudents.map((student) => {
             const { firstName, lastName, email, avatar, phone, courseCategory, city, id } = student;
             const detailsList: detailsList = [
@@ -142,7 +160,7 @@ const Students = () => {
               </CardItemTemplate>
             );
           })}
-        </ul>
+        </motion.ul>
       ) : null}
 
       <Modal isOpen={isOpen} onCloseModal={handleCloseModal}>

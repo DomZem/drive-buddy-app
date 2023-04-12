@@ -1,6 +1,7 @@
 import emptyImage from '@/assets/img/empty-image.png';
 import Avatar from '@/components/atoms/Avatar/Avatar';
 import Button from '@/components/atoms/Button/Button';
+import { motion } from 'framer-motion';
 import { type FC } from 'react';
 import { MdDelete, MdUpdate } from 'react-icons/md';
 
@@ -13,6 +14,14 @@ interface CardItemTemplateProps {
   imageAlt?: string;
 }
 
+const item = {
+  hidden: { y: 50, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+  },
+};
+
 const CardItemTemplate: FC<CardItemTemplateProps> = ({
   title,
   imageSrc,
@@ -21,7 +30,7 @@ const CardItemTemplate: FC<CardItemTemplateProps> = ({
   onUpdateItem,
   children,
 }) => (
-  <li className="flex flex-col shadow-lg duration-200 hover:shadow-xl">
+  <motion.li variants={item} className="item flex flex-col shadow-lg">
     <div className="flex flex-1 flex-col gap-2 rounded-t-lg bg-white p-3 lg:gap-3 lg:p-4">
       <div className="flex flex-col items-center gap-3 lg:gap-4">
         <Avatar src={imageSrc || emptyImage} alt={imageAlt === undefined ? title : imageAlt} />
@@ -39,7 +48,7 @@ const CardItemTemplate: FC<CardItemTemplateProps> = ({
         Delete
       </Button>
     </div>
-  </li>
+  </motion.li>
 );
 
 export default CardItemTemplate;
