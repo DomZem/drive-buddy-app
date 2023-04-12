@@ -65,7 +65,7 @@ const UpdateCreateStudentForm: FC<UpdateCreateStudentFormProps> = ({ formValues,
     const file = event.currentTarget.files?.[0];
 
     if (file !== undefined) {
-      const name = `${faker.datatype.uuid()}-${file.name}`;
+      const name = `students/${file.name}`;
 
       const storageRef = ref(storage, name);
       const uploadTask = uploadBytesResumable(storageRef, file);

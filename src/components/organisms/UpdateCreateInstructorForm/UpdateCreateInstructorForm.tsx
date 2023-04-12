@@ -4,7 +4,6 @@ import FormTemplate from '@/components/templates/FormTemplate/FormTemplate';
 import { db, storage } from '@/firebase/config';
 import { type InstructorType } from '@/types';
 import { categoryYup, emailYup, nameYup, passwordYup, phoneYup } from '@/utility/yup';
-import { faker } from '@faker-js/faker';
 import { addDoc, collection, doc, updateDoc } from '@firebase/firestore';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { Formik } from 'formik';
@@ -62,7 +61,7 @@ const UpdateCreateInstructorForm: FC<UpdateCreateInstructorFormProps> = ({ formV
     const file = event.currentTarget.files?.[0];
 
     if (file !== undefined) {
-      const name = `${faker.datatype.uuid()}-${file.name}`;
+      const name = `instructors/${file.name}`;
 
       const storageRef = ref(storage, name);
       const uploadTask = uploadBytesResumable(storageRef, file);

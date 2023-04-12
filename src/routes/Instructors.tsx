@@ -8,7 +8,7 @@ import useModal from '@/components/templates/Modal/useModal';
 import PageTemplate from '@/components/templates/PageTemplate/PageTemplate';
 import { db } from '@/firebase/config';
 import { type InstructorType, type ModalType } from '@/types';
-import { collection, deleteDoc, doc, getDocs } from '@firebase/firestore';
+import { collection, deleteDoc, doc, onSnapshot } from '@firebase/firestore';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { MdCategory, MdEmail, MdLocationCity, MdSmartphone } from 'react-icons/md';
@@ -27,13 +27,13 @@ const initialFormValues: InstructorType = {
 
 const Instructors = () => {
   const [instructors, setInstructors] = useState<InstructorType[]>([]);
-  const [currentModal, setCurrentModal] = useState<ModalType>('update-create');
   const [currentInstructor, setCurrentInstructor] = useState<InstructorType>(instructors[0]);
+  const [currentModal, setCurrentModal] = useState<ModalType>('update-create');
+
   const [filterByName, setFilterByName] = useState('');
   const [filteredInstructors, setFilteredInstructors] = useState<InstructorType[]>([]);
-  const { isOpen, handleOpenModal, handleCloseModal } = useModal();
 
-  const instructorsCollectionRef = collection(db, 'instructors');
+  const { isOpen, handleOpenModal, handleCloseModal } = useModal();
 
   const handleOpenItem = (modal: ModalType, currentItem: InstructorType) => {
     if (modal === 'delete') {
@@ -57,23 +57,6 @@ const Instructors = () => {
     }
   };
 
-  const getInstructors = async () => {
-    const data = await getDocs(instructorsCollectionRef);
-    setInstructors(
-      data.docs.map((doc) => ({
-        id: doc.id,
-        firstName: doc.data().firstName,
-        lastName: doc.data().lastName,
-        city: doc.data().city,
-        avatar: doc.data().avatar,
-        phone: doc.data().phone,
-        email: doc.data().email,
-        password: doc.data().password,
-        licenses: doc.data().licenses,
-      }))
-    );
-  };
-
   const handleFilterName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilterByName(e.target.value);
   };
@@ -89,7 +72,29 @@ const Instructors = () => {
   }, [filterByName, instructors]);
 
   useEffect(() => {
-    void getInstructors();
+    const unsub = onSnapshot(
+      collection(db, 'instructors'),
+      (snapshot) => {
+        const list: InstructorType[] = [];
+        snapshot.docs.forEach((doc) =>
+          list.push({
+            id: doc.id,
+            firstName: doc.data().firstName,
+            lastName: doc.data().lastName,
+            city: doc.data().city,
+            avatar: doc.data().avatar,
+            phone: doc.data().phone,
+            email: doc.data().email,
+            password: doc.data().password,
+            licenses: doc.data().licenses,
+          })
+        );
+        setInstructors(list);
+      },
+      () => toast.error('There was some error')
+    );
+
+    return () => unsub();
   }, []);
 
   return (

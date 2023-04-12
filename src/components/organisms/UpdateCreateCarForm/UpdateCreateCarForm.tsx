@@ -77,7 +77,7 @@ const UpdateCreateCarForm: FC<UpdateCreateCarFormProps> = ({ formValues, onClose
     const file = event.currentTarget.files?.[0];
 
     if (file !== undefined) {
-      const name = `${faker.datatype.uuid()}-${file.name}`;
+      const name = `cars/${file.name}`;
 
       const storageRef = ref(storage, name);
       const uploadTask = uploadBytesResumable(storageRef, file);

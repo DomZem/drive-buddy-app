@@ -3,13 +3,12 @@ import DeleteItemModal from '@/components/organisms/DeleteItemModal/DeleteItemMo
 import SearchCreateBar from '@/components/organisms/SearchCreateBar/SearchCreateBar';
 import UpdateCreateCarForm from '@/components/organisms/UpdateCreateCarForm/UpdateCreateCarForm';
 import CardItemTemplate from '@/components/templates/CardItemTemplate/CardItemTemplate';
-
 import Modal from '@/components/templates/Modal/Modal';
 import useModal from '@/components/templates/Modal/useModal';
 import PageTemplate from '@/components/templates/PageTemplate/PageTemplate';
 import { db } from '@/firebase/config';
 import { type CarType, type ModalType } from '@/types';
-import { collection, deleteDoc, doc, getDocs } from '@firebase/firestore';
+import { collection, deleteDoc, doc, onSnapshot } from '@firebase/firestore';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { GiFuelTank, GiKeyCard } from 'react-icons/gi';
@@ -38,26 +37,6 @@ const Cars = () => {
   const [filteredCars, setFilteredCars] = useState<CarType[]>([]);
 
   const { isOpen, handleOpenModal, handleCloseModal } = useModal();
-
-  const carsCollectionRef = collection(db, 'cars');
-
-  const getCars = async () => {
-    const data = await getDocs(carsCollectionRef);
-    setCars(
-      data.docs.map((doc) => ({
-        id: doc.id,
-        mark: doc.data().mark,
-        model: doc.data().model,
-        avatar: doc.data().avatar,
-        yearProduction: doc.data().yearProduction,
-        reviewDate: doc.data().reviewDate,
-        fuel: doc.data().fuel,
-        vin: doc.data().vin,
-        registration: doc.data().registration,
-        courseCategory: doc.data().courseCategory,
-      }))
-    );
-  };
 
   const handleOpenItem = (modal: ModalType, currentItem: CarType) => {
     if (modal === 'delete') {
@@ -96,7 +75,30 @@ const Cars = () => {
   }, [filterByName, cars]);
 
   useEffect(() => {
-    void getCars();
+    const unsub = onSnapshot(
+      collection(db, 'cars'),
+      (snapshot) => {
+        const list: CarType[] = [];
+        snapshot.docs.forEach((doc) =>
+          list.push({
+            id: doc.id,
+            mark: doc.data().mark,
+            model: doc.data().model,
+            avatar: doc.data().avatar,
+            yearProduction: doc.data().yearProduction,
+            reviewDate: doc.data().reviewDate,
+            fuel: doc.data().fuel,
+            vin: doc.data().vin,
+            registration: doc.data().registration,
+            courseCategory: doc.data().courseCategory,
+          })
+        );
+        setCars(list);
+      },
+      () => toast.error('There was some error')
+    );
+
+    return () => unsub();
   }, []);
 
   return (

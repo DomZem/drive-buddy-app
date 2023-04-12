@@ -8,7 +8,7 @@ import useModal from '@/components/templates/Modal/useModal';
 import PageTemplate from '@/components/templates/PageTemplate/PageTemplate';
 import { db } from '@/firebase/config';
 import { type ModalType, type StudentType } from '@/types';
-import { collection, deleteDoc, doc, getDocs } from '@firebase/firestore';
+import { collection, deleteDoc, doc, onSnapshot } from '@firebase/firestore';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { MdCategory, MdEmail, MdLocationCity, MdSmartphone } from 'react-icons/md';
@@ -29,28 +29,11 @@ const Students = () => {
   const [students, setStudents] = useState<StudentType[]>([]);
   const [currentStudent, setCurrentStudent] = useState<StudentType>(students[0]);
   const [currentModal, setCurrentModal] = useState<ModalType>('update-create');
+
   const [filterByName, setFilterByName] = useState('');
   const [filteredStudents, setFilteredStudents] = useState<StudentType[]>([]);
 
   const { isOpen, handleOpenModal, handleCloseModal } = useModal();
-  const studentsCollectionRef = collection(db, 'students');
-
-  const getStudents = async () => {
-    const data = await getDocs(studentsCollectionRef);
-    setStudents(
-      data.docs.map((doc) => ({
-        id: doc.id,
-        firstName: doc.data().firstName,
-        lastName: doc.data().lastName,
-        city: doc.data().city,
-        avatar: doc.data().avatar,
-        phone: doc.data().phone,
-        email: doc.data().email,
-        password: doc.data().password,
-        courseCategory: doc.data().courseCategory,
-      }))
-    );
-  };
 
   const handleOpenItem = (modal: ModalType, currentItem: StudentType) => {
     if (modal === 'delete') {
@@ -89,7 +72,29 @@ const Students = () => {
   }, [filterByName, students]);
 
   useEffect(() => {
-    void getStudents();
+    const unsub = onSnapshot(
+      collection(db, 'students'),
+      (snapshot) => {
+        const list: StudentType[] = [];
+        snapshot.docs.forEach((doc) =>
+          list.push({
+            id: doc.id,
+            firstName: doc.data().firstName,
+            lastName: doc.data().lastName,
+            city: doc.data().city,
+            avatar: doc.data().avatar,
+            phone: doc.data().phone,
+            email: doc.data().email,
+            password: doc.data().password,
+            courseCategory: doc.data().courseCategory,
+          })
+        );
+        setStudents(list);
+      },
+      () => toast.error('There was some error')
+    );
+
+    return () => unsub();
   }, []);
 
   return (
