@@ -4,6 +4,7 @@ import Logo from '@/components/atoms/Logo/Logo';
 import { auth } from '@/firebase/config';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Form, Formik } from 'formik';
+import { motion } from 'framer-motion';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router';
 import * as Yup from 'yup';
@@ -34,7 +35,16 @@ const Login = () => {
 
   return (
     <main className="flex h-screen items-center justify-center bg-slate-gray p-5">
-      <article className="flex w-full max-w-md flex-col items-center justify-center">
+      <motion.article
+        className="flex w-full max-w-md flex-col items-center justify-center"
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{
+          duration: 0.8,
+          delay: 0.5,
+          ease: [0, 0.71, 0.2, 1.01],
+        }}
+      >
         <header className="flex items-center justify-center gap-x-2 rounded-t-lg bg-rich-black p-2 shadow-lg">
           <Logo />
           <h1 className="text-xl font-semibold text-white lg:text-2xl">Drive buddy</h1>
@@ -59,7 +69,7 @@ const Login = () => {
             </Form>
           </Formik>
         </section>
-      </article>
+      </motion.article>
     </main>
   );
 };
