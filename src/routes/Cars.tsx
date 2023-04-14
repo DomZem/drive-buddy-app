@@ -6,9 +6,11 @@ import CardItemTemplate from '@/components/templates/CardItemTemplate/CardItemTe
 import Modal from '@/components/templates/Modal/Modal';
 import useModal from '@/components/templates/Modal/useModal';
 import PageTemplate from '@/components/templates/PageTemplate/PageTemplate';
-import { db } from '@/firebase/config';
+import { db, storage } from '@/firebase/config';
 import { type CarType, type ModalType } from '@/types';
+import { extractFilenameFromUrl } from '@/utility';
 import { collection, deleteDoc, doc, onSnapshot } from '@firebase/firestore';
+import { deleteObject, ref } from 'firebase/storage';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -64,6 +66,13 @@ const Cars = () => {
   const handleDeleteCar = async () => {
     const carDoc = doc(db, 'cars', currentCar.id);
     try {
+      if (currentCar.avatar.length > 0) {
+        // Delete image from firebase storage
+        const deleteFileName = extractFilenameFromUrl(currentCar.avatar);
+        const prevAvatarRef = ref(storage, `cars/${deleteFileName}`);
+        await deleteObject(prevAvatarRef);
+      }
+
       await deleteDoc(carDoc);
       toast.success('The Car has been deleted');
     } catch (e) {

@@ -6,9 +6,11 @@ import CardItemTemplate from '@/components/templates/CardItemTemplate/CardItemTe
 import Modal from '@/components/templates/Modal/Modal';
 import useModal from '@/components/templates/Modal/useModal';
 import PageTemplate from '@/components/templates/PageTemplate/PageTemplate';
-import { db } from '@/firebase/config';
+import { db, storage } from '@/firebase/config';
 import { type ModalType, type StudentType } from '@/types';
+import { extractFilenameFromUrl } from '@/utility';
 import { collection, deleteDoc, doc, onSnapshot } from '@firebase/firestore';
+import { deleteObject, ref } from 'firebase/storage';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -61,6 +63,13 @@ const Students = () => {
   const handleDeleteStudent = async () => {
     const studentDoc = doc(db, 'students', currentStudent.id);
     try {
+      // Delete image from firebase storage
+      if (currentStudent.avatar.length > 0) {
+        const deleteFileName = extractFilenameFromUrl(currentStudent.avatar);
+        const prevAvatarRef = ref(storage, `students/${deleteFileName}`);
+        await deleteObject(prevAvatarRef);
+      }
+
       await deleteDoc(studentDoc);
       toast.success('The Student has been deleted');
     } catch (e) {

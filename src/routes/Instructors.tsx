@@ -6,9 +6,11 @@ import CardItemTemplate from '@/components/templates/CardItemTemplate/CardItemTe
 import Modal from '@/components/templates/Modal/Modal';
 import useModal from '@/components/templates/Modal/useModal';
 import PageTemplate from '@/components/templates/PageTemplate/PageTemplate';
-import { db } from '@/firebase/config';
+import { db, storage } from '@/firebase/config';
 import { type InstructorType, type ModalType } from '@/types';
+import { extractFilenameFromUrl } from '@/utility';
 import { collection, deleteDoc, doc, onSnapshot } from '@firebase/firestore';
+import { deleteObject, ref } from 'firebase/storage';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
@@ -61,6 +63,13 @@ const Instructors = () => {
   const handleDeleteInstructor = async () => {
     const instructorDoc = doc(db, 'instructors', currentInstructor.id);
     try {
+      if (currentInstructor.avatar.length > 0) {
+        // Delete image from firebase storage
+        const deleteFileName = extractFilenameFromUrl(currentInstructor.avatar);
+        const prevAvatarRef = ref(storage, `instructors/${deleteFileName}`);
+        await deleteObject(prevAvatarRef);
+      }
+
       await deleteDoc(instructorDoc);
       toast.success('The Instructor has been deleted');
     } catch (e) {
