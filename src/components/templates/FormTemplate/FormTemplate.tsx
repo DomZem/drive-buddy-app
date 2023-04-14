@@ -7,15 +7,15 @@ import { MdClose } from 'react-icons/md';
 
 interface FormTemplateProps {
   file: string;
-  onUploadImage: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onCloseModal: () => void;
   children: React.ReactNode[];
 }
 
-const FormTemplate: FC<FormTemplateProps> = ({ file, onUploadImage, onCloseModal, children }) => (
+const FormTemplate: FC<FormTemplateProps> = ({ file, onFileChange, onCloseModal, children }) => (
   <Dialog.Panel as={Form} className="w-full max-w-xl">
     <div className="flex flex-col items-center justify-center gap-y-3 rounded-t-lg bg-rich-black p-4">
-      <ImageUploadField file={file} onChange={onUploadImage} />
+      <ImageUploadField file={file} onFileChange={onFileChange} />
     </div>
 
     {/* The last item is always a button to submit, others components will be always there */}

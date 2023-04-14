@@ -1,13 +1,15 @@
+import emptyImage from '@/assets/img/empty-image.png';
 import Button from '@/components/atoms/Button/Button';
 import InputField from '@/components/atoms/InputField/InputField';
 import SelectField from '@/components/atoms/SelectField/SelectField';
 import FormTemplate from '@/components/templates/FormTemplate/FormTemplate';
 import { db, storage } from '@/firebase/config';
 import { type CarType } from '@/types';
+import { extractFilenameFromUrl } from '@/utility';
 import { categoryYup, nameYup } from '@/utility/yup';
 import { faker } from '@faker-js/faker';
 import { addDoc, collection, doc, updateDoc } from '@firebase/firestore';
-import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { Formik } from 'formik';
 import { useState, type FC } from 'react';
 import toast from 'react-hot-toast';
@@ -44,18 +46,30 @@ const CarSchema = Yup.object({
 });
 
 const UpdateCreateCarForm: FC<UpdateCreateCarFormProps> = ({ formValues, onCloseModal }) => {
-  const [file, setFile] = useState(formValues.avatar);
+  const [file, setFile] = useState<File | null>(null);
 
-  // When there is an ID in formValues we have already created user and we want update data. When the ID is empty we want to create user.
-  const isUpdateForm = formValues.id.length > 0;
+  // When there is an mark in formValues we have already created user and we want update data. When the first name is empty we want to create user.
+  const isUpdateForm = formValues.mark.length > 0;
 
   const handleCreateCar = async (values: CarType) => {
     try {
-      await addDoc(collection(db, 'cars'), { ...values, avatar: file, id: faker.datatype.uuid() });
-      setFile('');
-      toast.success('The Car has been created');
+      if (file !== null) {
+        const name = `cars/(${faker.datatype.uuid()})${file.name}`;
+        const storageRef = ref(storage, name);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+
+        uploadTask.on('state_changed', () => {
+          void getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+            await addDoc(collection(db, 'cars'), { ...values, avatar: downloadURL });
+            toast.success('The Car has been created');
+          });
+        });
+      } else {
+        await addDoc(collection(db, 'cars'), { ...values });
+        toast.success('The Car has been created');
+      }
     } catch (e) {
-      toast.error('Something went wrong. The Car has not been added');
+      toast.error('Something went wrong. The Car has not been created');
     } finally {
       onCloseModal();
     }
@@ -63,9 +77,33 @@ const UpdateCreateCarForm: FC<UpdateCreateCarFormProps> = ({ formValues, onClose
 
   const handleUpdateCar = async (values: CarType) => {
     try {
-      const carRef = doc(db, 'cars', formValues.id);
-      await updateDoc(carRef, { ...values, avatar: file });
-      toast.success('The Car has been updated');
+      // If image in form is different that in firebase storage we should delete previos image
+      if (file !== null) {
+        // Delete the old file from Firebase Storage
+        const deleteFileName = extractFilenameFromUrl(formValues.avatar);
+        const prevAvatarRef = ref(storage, `cars/${deleteFileName}`);
+        await deleteObject(prevAvatarRef);
+
+        // Upload the new file to Firebase Storage with the same file name as the old file
+        const name = `cars/(${faker.datatype.uuid()})${file.name}`;
+        const storageRef = ref(storage, name);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+
+        // Listen to the state change of the upload task
+        uploadTask.on('state_changed', () => {
+          void getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+            // Update the student data in Firestore with the new download URL
+            const studentRef = doc(db, 'cars', formValues.id);
+            await updateDoc(studentRef, { ...values, avatar: downloadURL });
+            toast.success('The Car has been updated');
+          });
+        });
+      } else {
+        // If the new file is not selected or it is the same as the existing file, update only the other car data
+        const studentRef = doc(db, 'cars', formValues.id);
+        await updateDoc(studentRef, { ...values });
+        toast.success('The Car has been updated');
+      }
     } catch (e) {
       toast.error('Something went wrong. The Car has not been updated');
     } finally {
@@ -73,20 +111,11 @@ const UpdateCreateCarForm: FC<UpdateCreateCarFormProps> = ({ formValues, onClose
     }
   };
 
-  const handleUploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.currentTarget.files?.[0];
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.currentTarget.files?.[0];
 
-    if (file !== undefined) {
-      const name = `cars/${file.name}`;
-
-      const storageRef = ref(storage, name);
-      const uploadTask = uploadBytesResumable(storageRef, file);
-      uploadTask.on('state_changed', () => {
-        // Upload completed successfully, now we can get the download URL
-        void getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          setFile(downloadURL);
-        });
-      });
+    if (selectedFile) {
+      setFile(selectedFile);
     }
   };
 
@@ -96,7 +125,11 @@ const UpdateCreateCarForm: FC<UpdateCreateCarFormProps> = ({ formValues, onClose
       onSubmit={isUpdateForm ? handleUpdateCar : handleCreateCar}
       validationSchema={CarSchema}
     >
-      <FormTemplate file={file} onUploadImage={handleUploadImage} onCloseModal={onCloseModal}>
+      <FormTemplate
+        file={file !== null ? URL.createObjectURL(file) : formValues.avatar ? formValues.avatar : emptyImage}
+        onFileChange={handleFileChange}
+        onCloseModal={onCloseModal}
+      >
         <InputField id="mark" label="Mark" name="mark" />
         <InputField id="model" label="Model" name="model" />
         <InputField id="vin" label="Vin" name="vin" />
