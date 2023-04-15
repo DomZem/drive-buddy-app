@@ -35,4 +35,16 @@ export interface StudentType {
   courseCategory: string;
 }
 
+export interface LessonType {
+  id: string;
+  date: Date;
+  avatar: string;
+  instructorId: string;
+  carId: string;
+  courseCategory: string;
+  studentsId: string[];
+  lessonType: string;
+  location: string;
+}
+
 export type ModalType = 'delete' | 'update-create';
